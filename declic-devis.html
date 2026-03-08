@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Déclic — Calculateur de Devis</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --border: #1e1e2e;
+    --accent: #c8f04a;
+    --accent2: #f04a8a;
+    --text: #e8e8f0;
+    --muted: #5a5a72;
+    --card: #14141e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px; left: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(200,240,74,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 880px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 52px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .logo strong {
+    display: block;
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    margin-bottom: 2px;
+  }
+
+  .badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    background: var(--border);
+    color: var(--muted);
+    padding: 4px 10px;
+    border-radius: 2px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  .section {
+    margin-bottom: 32px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .section:nth-child(2) { animation-delay: 0.05s; }
+  .section:nth-child(3) { animation-delay: 0.1s; }
+  .section:nth-child(4) { animation-delay: 0.15s; }
+  .section:nth-child(5) { animation-delay: 0.2s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: var(--accent);
+    padding: 3px 8px;
+    border-radius: 2px;
+    font-weight: 500;
+  }
+
+  .section-tag.pink { background: var(--accent2); }
+  .section-tag.blue { background: #4ab8f0; }
+  .section-tag.orange { background: #f0a04a; }
+
+  .section-title {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--text);
+  }
+
+  .section-body {
+    padding: 24px;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .row.three { grid-template-columns: 1fr 1fr 1fr; }
+  .row.full { grid-template-columns: 1fr; }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  input[type="number"], input[type="text"], select {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    padding: 10px 14px;
+    border-radius: 3px;
+    width: 100%;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -moz-appearance: textfield;
+  }
+
+  input[type="number"]:focus, input[type="text"]:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(200,240,74,0.1);
+  }
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+  select option { background: var(--bg); }
+
+  .hint {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .grade-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .grade-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 16px;
+    position: relative;
+  }
+
+  .grade-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .grade-rate {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .grade-rate span {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 4px 0 16px;
+  }
+
+  /* Summary panel */
+  .summary {
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    padding: 32px;
+    position: sticky;
+    bottom: 24px;
+    animation: fadeUp 0.5s 0.3s ease both;
+  }
+
+  .summary-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+
+  .line-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+
+  .line-name { color: var(--muted); }
+  .line-val { color: var(--text); font-weight: 500; }
+  .line-val.zero { color: var(--border); }
+
+  .line.margin {
+    border-top: 1px dashed var(--border);
+    padding-top: 10px;
+    margin-top: 4px;
+  }
+
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-top: 1px solid var(--accent);
+    padding-top: 20px;
+    margin-top: 4px;
+  }
+
+  .total-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .total-amount {
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .total-amount .currency {
+    font-size: 18px;
+    font-weight: 600;
+    vertical-align: super;
+    margin-right: 4px;
+  }
+
+  .sub-total {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: right;
+    margin-top: 4px;
+  }
+
+  .btn-reset {
+    margin-top: 24px;
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-reset:hover {
+    border-color: var(--muted);
+    color: var(--text);
+  }
+
+  .info-banner {
+    background: rgba(200,240,74,0.04);
+    border: 1px solid rgba(200,240,74,0.15);
+    border-radius: 3px;
+    padding: 12px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  .marge-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .marge-control input {
+    width: 80px;
+    flex-shrink: 0;
+  }
+
+  .marge-slider {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+    outline: none;
+    border: none;
+    padding: 0;
+  }
+
+  .marge-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+  }
+
+  @media (max-width: 640px) {
+    .row, .row.three, .grade-grid { grid-template-columns: 1fr; }
+    header { flex-direction: column; gap: 12px; }
+    .total-amount { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="logo">
+      <strong>Déclic</strong>
+      Calculateur de Devis
+    </div>
+    <div class="badge">Outil Interne — v1.0</div>
+  </header>
+
+  <div class="info-banner">
+    ⚡ Tous les champs sont optionnels. Remplis uniquement les postes concernés par le concept. Le total se calcule en temps réel.
+  </div>
+
+  <!-- STRATÉGIE / CONSEIL -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-tag">01</span>
+      <span class="section-title">Stratégie & Conseil</span>
+    </div>
+    <div class="section-body">
+      <div class="grade-grid">
+        <!-- Grade 1 -->
+        <div class="grade-card">
+          <div class="grade-label">Grade 1 — Associé</div>
+          <div class="grade-rate">850 <span>dhs/h</span></div>
+          <div class="divider"></div>
+          <div class="field">
+            <label>Réflexion Concept (h)</label>
+            <input type="number" id="g1_concept" min="0" step="0.5" placeholder="0" oninput="calc()">
+          </div>
+          <div class="field" style="margin-top:10px">
+            <label>Pilotage (h)</label>
+            <input type="number" id="g1_pilotage" min="0" step="0.5" placeholder="0" oninput="calc()">
+          </div>
+        </div>
+        <!-- Grade 2 -->
+        <div class="grade-card">
+          <div class="grade-label">Grade 2 — Confirmé</div>
+          <div class="grade-rate">450 <span>dhs/h</span></div>
+          <div class="divider"></div>
+          <div class="field">
+            <label>Réflexion Concept (h)</label>
+            <input type="number" id="g2_concept" min="0" step="0.5" placeholder="0" oninput="calc()">
+          </div>
+          <div class="field" style="margin-top:10px">
+            <label>Pilotage (h)</label>
+            <input type="number" id="g2_pilotage" min="0" step="0.5" placeholder="0" oninput="calc()">
+          </div>
+        </div>
+        <!-- Grade 3 -->
+        <div class="grade-card">
+          <div class="grade-label">Grade 3 — Junior</div>
+          <div class="grade-rate">250 <span>dhs/h</span></div>
+          <div class="divider"></div>
+          <div class="field">
+            <label>Réflexion Concept (h)</label>
+            <input type="number" id="g3_concept" min="0" step="0.5" placeholder="0" oninput="calc()">
+          </div>
+          <div class="field" style="margin-top:10px">
+            <label>Pilotage (h)</label>
+            <input type="number" id="g3_pilotage" min="0" step="0.5" placeholder="0" oninput="calc()">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INFLUENCE -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-tag pink">02</span>
+      <span class="section-title">Influence</span>
+    </div>
+    <div class="section-body">
+      <div class="row">
+        <div class="field">
+          <label>Cachet influenceur(s) — Total (dhs)</label>
+          <input type="number" id="influence" min="0" step="100" placeholder="0" oninput="calc()">
+          <span class="hint">Somme brute de tous les cachets négociés</span>
+        </div>
+        <div class="field">
+          <label>Nb d'épisodes / activations</label>
+          <input type="number" id="episodes" min="1" step="1" placeholder="1" oninput="calc()">
+          <span class="hint">Multiplie le cachet par le nb d'épisodes</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROD -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-tag blue">03</span>
+      <span class="section-title">Production (Département Prod)</span>
+    </div>
+    <div class="section-body">
+      <div class="row three">
+        <div class="field">
+          <label>Micro-contenu (dhs)</label>
+          <input type="number" id="prod_micro" min="0" step="100" placeholder="0" oninput="calc()">
+        </div>
+        <div class="field">
+          <label>Stand / Dispositif (dhs)</label>
+          <input type="number" id="prod_stand" min="0" step="100" placeholder="0" oninput="calc()">
+        </div>
+        <div class="field">
+          <label>Monolithe (dhs)</label>
+          <input type="number" id="prod_mono" min="0" step="100" placeholder="0" oninput="calc()">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Autre poste Prod (dhs)</label>
+          <input type="number" id="prod_autre" min="0" step="100" placeholder="0" oninput="calc()">
+        </div>
+        <div class="field">
+          <label>Libellé poste</label>
+          <input type="text" id="prod_autre_label" placeholder="ex : Impression, Logistique…">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUDIOVISUEL / CONTENT CREATION -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-tag orange">04</span>
+      <span class="section-title">Audiovisuel (Content Creation)</span>
+    </div>
+    <div class="section-body">
+      <div class="row">
+        <div class="field">
+          <label>Tournage — nb jours</label>
+          <input type="number" id="av_jours" min="0" step="0.5" placeholder="0" oninput="calc()">
+        </div>
+        <div class="field">
+          <label>Tarif journée tournage (dhs)</label>
+          <input type="number" id="av_tarif" min="0" step="100" placeholder="0" oninput="calc()">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Post-production forfait (dhs)</label>
+          <input type="number" id="av_postprod" min="0" step="100" placeholder="0" oninput="calc()">
+        </div>
+        <div class="field">
+          <label>Autre poste AV (dhs)</label>
+          <input type="number" id="av_autre" min="0" step="100" placeholder="0" oninput="calc()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MARGE + SUMMARY -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-tag">05</span>
+      <span class="section-title">Marge Agence</span>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>Taux de marge (%)</label>
+        <div class="marge-control">
+          <input type="number" id="marge" min="0" max="100" step="1" value="20" oninput="syncSlider(); calc()">
+          <input type="range" class="marge-slider" id="marge_slider" min="0" max="60" step="1" value="20" oninput="syncInput(); calc()">
+        </div>
+        <span class="hint">S'applique sur le total tous postes confondus</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RÉSULTAT -->
+  <div class="summary">
+    <div class="summary-title">— Récapitulatif Devis</div>
+    <div class="line-items">
+      <div class="line">
+        <span class="line-name">Stratégie & Conseil</span>
+        <span class="line-val" id="r_conseil">0 dhs</span>
+      </div>
+      <div class="line">
+        <span class="line-name">Influence</span>
+        <span class="line-val" id="r_influence">0 dhs</span>
+      </div>
+      <div class="line">
+        <span class="line-name">Production</span>
+        <span class="line-val" id="r_prod">0 dhs</span>
+      </div>
+      <div class="line">
+        <span class="line-name">Audiovisuel</span>
+        <span class="line-val" id="r_av">0 dhs</span>
+      </div>
+      <div class="line margin">
+        <span class="line-name">Sous-total HT</span>
+        <span class="line-val" id="r_subtotal">0 dhs</span>
+      </div>
+      <div class="line">
+        <span class="line-name">Marge agence (<span id="r_marge_pct">20</span>%)</span>
+        <span class="line-val" id="r_marge">0 dhs</span>
+      </div>
+    </div>
+    <div class="total-row">
+      <div>
+        <div class="total-label">Total devis</div>
+        <div class="sub-total" id="r_sub2"></div>
+      </div>
+      <div style="text-align:right">
+        <div class="total-amount"><span class="currency">DHS</span><span id="r_total">0</span></div>
+      </div>
+    </div>
+    <button class="btn-reset" onclick="resetAll()">↺ Réinitialiser</button>
+  </div>
+
+</div>
+
+<script>
+  function n(id) { return parseFloat(document.getElementById(id).value) || 0; }
+  function fmt(v) { return Math.round(v).toLocaleString('fr-FR'); }
+
+  function calc() {
+    // Conseil
+    const g1 = 850 * (n('g1_concept') + n('g1_pilotage'));
+    const g2 = 450 * (n('g2_concept') + n('g2_pilotage'));
+    const g3 = 250 * (n('g3_concept') + n('g3_pilotage'));
+    const conseil = g1 + g2 + g3;
+
+    // Influence
+    const eps = Math.max(1, n('episodes'));
+    const influence = n('influence') * eps;
+
+    // Prod
+    const prod = n('prod_micro') + n('prod_stand') + n('prod_mono') + n('prod_autre');
+
+    // AV
+    const av = n('av_jours') * n('av_tarif') + n('av_postprod') + n('av_autre');
+
+    const subtotal = conseil + influence + prod + av;
+    const margePct = n('marge') / 100;
+    const marge = subtotal * margePct;
+    const total = subtotal + marge;
+
+    document.getElementById('r_conseil').textContent = fmt(conseil) + ' dhs';
+    document.getElementById('r_influence').textContent = fmt(influence) + ' dhs';
+    document.getElementById('r_prod').textContent = fmt(prod) + ' dhs';
+    document.getElementById('r_av').textContent = fmt(av) + ' dhs';
+    document.getElementById('r_subtotal').textContent = fmt(subtotal) + ' dhs';
+    document.getElementById('r_marge_pct').textContent = n('marge');
+    document.getElementById('r_marge').textContent = fmt(marge) + ' dhs';
+    document.getElementById('r_total').textContent = fmt(total);
+    document.getElementById('r_sub2').textContent = 'dont ' + fmt(marge) + ' dhs marge';
+  }
+
+  function syncSlider() {
+    document.getElementById('marge_slider').value = document.getElementById('marge').value;
+    document.getElementById('r_marge_pct').textContent = document.getElementById('marge').value;
+  }
+
+  function syncInput() {
+    document.getElementById('marge').value = document.getElementById('marge_slider').value;
+    document.getElementById('r_marge_pct').textContent = document.getElementById('marge_slider').value;
+  }
+
+  function resetAll() {
+    document.querySelectorAll('input[type="number"]').forEach(i => {
+      if (i.id === 'marge') i.value = 20;
+      else i.value = '';
+    });
+    document.getElementById('marge_slider').value = 20;
+    document.getElementById('episodes').value = '';
+    calc();
+  }
+
+  calc();
+</script>
+</body>
+</html>
