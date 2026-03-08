@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Déclic — Calculateur de Devis</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --border: #1e1e2e;
+    --accent: #c8f04a;
+    --accent2: #f04a8a;
+    --text: #e8e8f0;
+    --muted: #5a5a72;
+    --card: #14141e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px 120px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px; left: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(200,240,74,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 880px; margin: 0 auto; position: relative; z-index: 1; }
+
+  header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 52px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo { font-size: 11px; font-family: 'DM Mono', monospace; letter-spacing: 0.3em; color: var(--muted); text-transform: uppercase; }
+  .logo strong { display: block; font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; margin-bottom: 2px; }
+  .badge { font-family: 'DM Mono', monospace; font-size: 10px; background: var(--border); color: var(--muted); padding: 4px 10px; border-radius: 2px; letter-spacing: 0.15em; text-transform: uppercase; margin-top: 6px; }
+
+  .section { margin-bottom: 32px; background: var(--card); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; animation: fadeUp 0.4s ease both; }
+  .section:nth-child(2) { animation-delay: 0.05s; }
+  .section:nth-child(3) { animation-delay: 0.1s; }
+  .section:nth-child(4) { animation-delay: 0.15s; }
+  .section:nth-child(5) { animation-delay: 0.2s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header { display: flex; align-items: center; gap: 12px; padding: 18px 24px; background: var(--surface); border-bottom: 1px solid var(--border); }
+  .section-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--bg); background: var(--accent); padding: 3px 8px; border-radius: 2px; font-weight: 500; }
+  .section-tag.pink { background: var(--accent2); }
+  .section-tag.blue { background: #4ab8f0; }
+  .section-tag.orange { background: #f0a04a; }
+  .section-title { font-size: 14px; font-weight: 700; letter-spacing: 0.05em; color: var(--text); }
+  .section-body { padding: 24px; }
+
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .row.three { grid-template-columns: 1fr 1fr 1fr; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+
+  label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+
+  input[type="number"], input[type="text"] {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    padding: 10px 14px;
+    border-radius: 3px;
+    width: 100%;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -moz-appearance: textfield;
+  }
+
+  input[type="number"]:focus, input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(200,240,74,0.1);
+  }
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+  .hint { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); margin-top: 2px; }
+
+  /* Grades */
+  .grade-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .grade-card { background: var(--bg); border: 1px solid var(--border); border-radius: 3px; padding: 16px; }
+  .grade-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .grade-rate { font-size: 18px; font-weight: 800; color: var(--accent); margin-bottom: 12px; }
+  .grade-rate span { font-size: 11px; font-weight: 400; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .divider { height: 1px; background: var(--border); margin: 4px 0 16px; }
+
+  /* Influence */
+  .influence-grid { display: flex; flex-direction: column; gap: 10px; }
+  .influence-row {
+    display: grid;
+    grid-template-columns: 1fr 160px 36px;
+    gap: 10px;
+    align-items: center;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 12px 14px;
+    animation: fadeUp 0.2s ease both;
+  }
+  .inf-label { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 5px; }
+  .influence-row input[type="text"] { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; padding: 4px 0; font-size: 13px; }
+  .influence-row input[type="text"]:focus { box-shadow: none; border-bottom-color: var(--accent); }
+  .influence-row input[type="number"] { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; padding: 4px 0; font-size: 16px; font-weight: 700; color: var(--accent); -moz-appearance: textfield; }
+  .influence-row input[type="number"]:focus { box-shadow: none; border-bottom-color: var(--accent); }
+
+  /* Items table */
+  .items-table { width: 100%; border-collapse: collapse; }
+  .items-table thead tr { border-bottom: 1px solid var(--border); }
+  .items-table th { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); padding: 0 8px 10px; text-align: left; font-weight: 400; }
+  .items-table th.num { width: 80px; }
+  .items-table th.prix { width: 130px; }
+  .items-table th.total { width: 110px; text-align: right; }
+  .items-table th.del { width: 36px; }
+
+  .item-row td { padding: 6px 8px; vertical-align: middle; }
+  .item-row td.total-cell { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--text); text-align: right; white-space: nowrap; }
+  .item-row input[type="text"] { font-size: 13px; padding: 8px 10px; }
+  .item-row input[type="number"] { font-size: 13px; padding: 8px 10px; }
+
+  .section-subtotal {
+    display: flex; justify-content: flex-end; align-items: center; gap: 10px;
+    margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border);
+    font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted);
+  }
+  .section-subtotal strong { color: var(--text); font-size: 14px; }
+
+  .btn-add {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin-top: 14px; width: 100%;
+    background: transparent; border: 1px dashed var(--border);
+    color: var(--muted); font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 9px 16px; border-radius: 3px; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-add:hover { border-color: var(--accent); color: var(--accent); }
+
+  .btn-del {
+    background: transparent; border: 1px solid var(--border); color: var(--muted);
+    font-size: 14px; width: 32px; height: 32px; border-radius: 3px; cursor: pointer;
+    transition: all 0.2s; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .btn-del:hover { border-color: var(--accent2); color: var(--accent2); }
+
+  /* Commission */
+  .marge-control { display: flex; align-items: center; gap: 12px; }
+  .marge-control input[type="number"] { width: 80px; flex-shrink: 0; }
+  .marge-slider { flex: 1; -webkit-appearance: none; height: 2px; background: var(--border); border-radius: 2px; outline: none; border: none; padding: 0; }
+  .marge-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); cursor: pointer; }
+
+  /* Summary */
+  .summary {
+    background: var(--surface); border: 1px solid var(--accent); border-radius: 4px;
+    position: sticky; bottom: 16px; overflow: hidden;
+    transition: box-shadow 0.3s; animation: fadeUp 0.5s 0.3s ease both;
+  }
+  .summary:hover { box-shadow: 0 0 32px rgba(200,240,74,0.08); }
+
+  .summary-bar { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; cursor: pointer; user-select: none; }
+  .summary-bar-left { display: flex; align-items: center; gap: 16px; }
+  .summary-bar-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); }
+  .summary-bar-total { font-size: 20px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; line-height: 1; }
+  .summary-bar-total .cur { font-size: 11px; font-weight: 500; margin-right: 3px; vertical-align: super; font-family: 'DM Mono', monospace; }
+  .summary-toggle { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
+  .summary-toggle .arrow { display: inline-block; transition: transform 0.3s ease; }
+  .summary-bar:hover .summary-toggle { color: var(--accent); }
+
+  .summary-body { max-height: 0; overflow: hidden; border-top: 1px solid transparent; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), border-color 0.3s; }
+  .summary-body.open { max-height: 600px; border-top-color: var(--border); }
+  .summary-body-inner { padding: 24px; }
+  .summary-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+
+  .line-items { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .line { display: flex; justify-content: space-between; align-items: center; font-family: 'DM Mono', monospace; font-size: 12px; }
+  .line-name { color: var(--muted); }
+  .line-val { color: var(--text); font-weight: 500; }
+  .line.margin { border-top: 1px dashed var(--border); padding-top: 10px; margin-top: 4px; }
+
+  .total-row { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid var(--accent); padding-top: 20px; margin-top: 4px; }
+  .total-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .total-amount { font-size: 40px; font-weight: 800; color: var(--accent); letter-spacing: -0.03em; line-height: 1; }
+  .total-amount .currency { font-size: 16px; font-weight: 600; vertical-align: super; margin-right: 4px; }
+  .sub-total { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); text-align: right; margin-top: 4px; }
+
+  .btn-reset { margin-top: 20px; width: 100%; background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; padding: 12px; border-radius: 3px; cursor: pointer; transition: all 0.2s; }
+  .btn-reset:hover { border-color: var(--muted); color: var(--text); }
+
+  .info-banner { background: rgba(200,240,74,0.04); border: 1px solid rgba(200,240,74,0.15); border-radius: 3px; padding: 12px 16px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
+
+  @media (max-width: 640px) {
+    .row, .row.three, .grade-grid { grid-template-columns: 1fr; }
+    header { flex-direction: column; gap: 12px; }
+    .total-amount { font-size: 32px; }
+    .influence-row { grid-template-columns: 1fr 120px 36px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="logo">
+      <strong>Déclic</strong>
+      Calculateur de Devis
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+      <div class="badge">Outil Interne — v1.3</div>
+      <button onclick="resetAll()" style="background:transparent;border:1px solid #2a0a14;color:#f04a8a;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;padding:5px 12px;border-radius:2px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(240,74,138,0.08)'" onmouseout="this.style.background='transparent'">↺ Réinitialiser</button>
+    </div>
+  </header>
+
+  <div class="info-banner">
+    ⚡ Tous les champs sont optionnels. Remplis uniquement les postes concernés. Le total se calcule en temps réel.
+  </div>
+
+  <!-- 01 STRATÉGIE -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-tag">01</span>
+      <span class="section-title">Stratégie & Conseil</span>
+    </div>
+    <div class="section-body">
+      <div class="grade-grid">
+        <div class="grade-card">
+          <div class="grade-label">Grade 1 — Associé</div>
+          <div class="grade-rate">850 <span>dhs/h</span></div>
+          <div class="divider"></div>
+          <div class="field">
+            <label>Réflexion Concept (h)</label>
+            <input type="number" id="g1_concept" min="0" step="0.5" placeholder="0" oninput="calc()">
+          </div>
+          <div class="field" style="margin-top:10px">
+            <label>Pilotage (h)</label>
+            <input type="number" id="g1_pilotage" min="0" step="0.5" placeholder="0" oninput="calc()">
+          </div>
+        </div>
+        <div class="grade-card">
+          <div class="grade-label">Grade 2 — Confirmé</div>
+          <div class="grade-rate">450 <span>dhs/h</span></div>
+          <div class="divider"></div>
+          <div class="field">
+            <label>Réflexion Concept (h)</label>
+            <input type="number" id="g2_concept" min="0" step="0.5" placeholder="0" oninput="calc()">
+          </div>
+          <div class="field" style="margin-top:10px">
+            <label>Pilotage (h)</label>
+            <input type="number" id="g2_pilotage" min="0" step="0.5" placeholder="0" oninput="calc()">
+          </div>
+        </div>
+        <div class="grade-card">
+          <div class="grade-label">Grade 3 — Junior</div>
+          <div class="grade-rate">250 <span>dhs/h</span></div>
+          <div class="divider"></div>
+          <div class="field">
+            <label>Réflexion Concept (h)</label>
+            <input type="number" id="g3_concept" min="0" step="0.5" placeholder="0" oninput="calc()">
+          </div>
+          <div class="field" style="margin-top:10px">
+            <label>Pilotage (h)</label>
+            <input type="number" id="g3_pilotage" min="0" step="0.5" placeholder="0" oninput="calc()">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 INFLUENCE -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-tag pink">02</span>
+      <span class="section-title">Influence</span>
+    </div>
+    <div class="section-body">
+      <div class="influence-grid" id="influence-list"></div>
+      <button class="btn-add" onclick="addInfluenceur()">+ Ajouter un influenceur</button>
+      <div class="section-subtotal">Sous-total influence : <strong id="st_influence">0 dhs</strong></div>
+    </div>
+  </div>
+
+  <!-- 03 PROD -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-tag blue">03</span>
+      <span class="section-title">Production (Département Prod)</span>
+    </div>
+    <div class="section-body">
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th>Item / Prestation</th>
+            <th class="num">Qté</th>
+            <th class="prix">Prix unitaire</th>
+            <th class="total">Total</th>
+            <th class="del"></th>
+          </tr>
+        </thead>
+        <tbody id="prod-list"></tbody>
+      </table>
+      <button class="btn-add" onclick="addProdItem()">+ Ajouter un item</button>
+      <div class="section-subtotal">Sous-total prod : <strong id="st_prod">0 dhs</strong></div>
+    </div>
+  </div>
+
+  <!-- 04 AUDIOVISUEL -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-tag orange">04</span>
+      <span class="section-title">Audiovisuel (Content Creation)</span>
+    </div>
+    <div class="section-body">
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th>Item / Prestation</th>
+            <th class="num">Qté</th>
+            <th class="prix">Prix unitaire</th>
+            <th class="total">Total</th>
+            <th class="del"></th>
+          </tr>
+        </thead>
+        <tbody id="av-list"></tbody>
+      </table>
+      <button class="btn-add" onclick="addAvItem()">+ Ajouter un item</button>
+      <div class="section-subtotal">Sous-total AV : <strong id="st_av">0 dhs</strong></div>
+    </div>
+  </div>
+
+  <!-- 05 COMMISSION -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-tag">05</span>
+      <span class="section-title">Commission Agence</span>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>Taux de commission (%)</label>
+        <div class="marge-control">
+          <input type="number" id="marge" min="0" max="100" step="1" value="20" oninput="syncSlider(); calc()">
+          <input type="range" class="marge-slider" id="marge_slider" min="0" max="60" step="1" value="20" oninput="syncInput(); calc()">
+        </div>
+        <span class="hint">S'applique sur le total tous postes confondus</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RÉSULTAT -->
+  <div class="summary" id="summary">
+    <div class="summary-bar" onclick="toggleSummary()">
+      <div class="summary-bar-left">
+        <span class="summary-bar-label">Total devis</span>
+        <span class="summary-bar-total"><span class="cur">DHS</span><span id="r_total_bar">0</span></span>
+      </div>
+      <div class="summary-toggle">
+        <span id="toggle-label">Voir le détail</span>
+        <span class="arrow" id="toggle-arrow">↑</span>
+      </div>
+    </div>
+    <div class="summary-body" id="summary-body">
+      <div class="summary-body-inner">
+        <div class="summary-title">— Récapitulatif Devis</div>
+        <div class="line-items">
+          <div class="line"><span class="line-name">Stratégie & Conseil</span><span class="line-val" id="r_conseil">0 dhs</span></div>
+          <div class="line"><span class="line-name">Influence</span><span class="line-val" id="r_influence">0 dhs</span></div>
+          <div class="line"><span class="line-name">Production</span><span class="line-val" id="r_prod">0 dhs</span></div>
+          <div class="line"><span class="line-name">Audiovisuel</span><span class="line-val" id="r_av">0 dhs</span></div>
+          <div class="line margin"><span class="line-name">Sous-total HT</span><span class="line-val" id="r_subtotal">0 dhs</span></div>
+          <div class="line"><span class="line-name">Commission agence (<span id="r_marge_pct">20</span>%)</span><span class="line-val" id="r_marge">0 dhs</span></div>
+        </div>
+        <div class="total-row">
+          <div>
+            <div class="total-label">Total devis</div>
+            <div class="sub-total" id="r_sub2"></div>
+          </div>
+          <div style="text-align:right">
+            <div class="total-amount"><span class="currency">DHS</span><span id="r_total">0</span></div>
+          </div>
+        </div>
+        <button class="btn-reset" onclick="resetAll()">↺ Réinitialiser</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function n(id) { return parseFloat(document.getElementById(id).value) || 0; }
+  function fmt(v) { return Math.round(v).toLocaleString('fr-FR'); }
+
+  // ── INFLUENCE ──────────────────────────────────────────
+  let infId = 0;
+  function addInfluenceur() {
+    const id = ++infId;
+    const div = document.createElement('div');
+    div.className = 'influence-row';
+    div.id = 'inf_' + id;
+    div.innerHTML = `
+      <div>
+        <div class="inf-label">Nom / Handle</div>
+        <input type="text" placeholder="ex : @nom_influenceur">
+      </div>
+      <div>
+        <div class="inf-label">Forfait global (dhs)</div>
+        <input type="number" min="0" step="100" placeholder="0" oninput="calc()">
+      </div>
+      <button class="btn-del" onclick="removeRow('inf_${id}')">×</button>
+    `;
+    document.getElementById('influence-list').appendChild(div);
+  }
+
+  // ── PROD ITEMS ─────────────────────────────────────────
+  let prodId = 0;
+  function addProdItem() {
+    const id = 'prod_' + (++prodId);
+    const tr = document.createElement('tr');
+    tr.className = 'item-row';
+    tr.id = id;
+    tr.innerHTML = `
+      <td><input type="text" placeholder="ex : Décor, Transport, Impression, Location matériel…"></td>
+      <td><input type="number" min="0" step="1" placeholder="1" value="1" oninput="updateItemTotal('${id}')"></td>
+      <td><input type="number" min="0" step="100" placeholder="0" oninput="updateItemTotal('${id}')"></td>
+      <td class="total-cell" id="t_${id}">0 dhs</td>
+      <td><button class="btn-del" onclick="removeRow('${id}')">×</button></td>
+    `;
+    document.getElementById('prod-list').appendChild(tr);
+  }
+
+  // ── AV ITEMS ───────────────────────────────────────────
+  let avId = 0;
+  function addAvItem() {
+    const id = 'av_' + (++avId);
+    const tr = document.createElement('tr');
+    tr.className = 'item-row';
+    tr.id = id;
+    tr.innerHTML = `
+      <td><input type="text" placeholder="ex : Journée tournage, Montage, Motion design, Étalonnage…"></td>
+      <td><input type="number" min="0" step="1" placeholder="1" value="1" oninput="updateItemTotal('${id}')"></td>
+      <td><input type="number" min="0" step="100" placeholder="0" oninput="updateItemTotal('${id}')"></td>
+      <td class="total-cell" id="t_${id}">0 dhs</td>
+      <td><button class="btn-del" onclick="removeRow('${id}')">×</button></td>
+    `;
+    document.getElementById('av-list').appendChild(tr);
+  }
+
+  function updateItemTotal(id) {
+    const row = document.getElementById(id);
+    if (!row) return;
+    const inputs = row.querySelectorAll('input[type="number"]');
+    const qty = parseFloat(inputs[0].value) || 0;
+    const prix = parseFloat(inputs[1].value) || 0;
+    document.getElementById('t_' + id).textContent = fmt(qty * prix) + ' dhs';
+    calc();
+  }
+
+  function removeRow(id) {
+    const el = document.getElementById(id);
+    if (el) { el.remove(); calc(); }
+  }
+
+  // ── CALCUL GLOBAL ──────────────────────────────────────
+  function calc() {
+    const conseil = 850*(n('g1_concept')+n('g1_pilotage')) + 450*(n('g2_concept')+n('g2_pilotage')) + 250*(n('g3_concept')+n('g3_pilotage'));
+
+    let influence = 0;
+    document.querySelectorAll('#influence-list .influence-row').forEach(row => {
+      influence += parseFloat(row.querySelector('input[type="number"]')?.value) || 0;
+    });
+
+    let prod = 0;
+    document.querySelectorAll('#prod-list .item-row').forEach(row => {
+      const inputs = row.querySelectorAll('input[type="number"]');
+      prod += (parseFloat(inputs[0]?.value)||0) * (parseFloat(inputs[1]?.value)||0);
+    });
+
+    let av = 0;
+    document.querySelectorAll('#av-list .item-row').forEach(row => {
+      const inputs = row.querySelectorAll('input[type="number"]');
+      av += (parseFloat(inputs[0]?.value)||0) * (parseFloat(inputs[1]?.value)||0);
+    });
+
+    const subtotal = conseil + influence + prod + av;
+    const commPct = n('marge') / 100;
+    const commission = subtotal * commPct;
+    const total = subtotal + commission;
+
+    document.getElementById('st_influence').textContent = fmt(influence) + ' dhs';
+    document.getElementById('st_prod').textContent = fmt(prod) + ' dhs';
+    document.getElementById('st_av').textContent = fmt(av) + ' dhs';
+
+    document.getElementById('r_conseil').textContent = fmt(conseil) + ' dhs';
+    document.getElementById('r_influence').textContent = fmt(influence) + ' dhs';
+    document.getElementById('r_prod').textContent = fmt(prod) + ' dhs';
+    document.getElementById('r_av').textContent = fmt(av) + ' dhs';
+    document.getElementById('r_subtotal').textContent = fmt(subtotal) + ' dhs';
+    document.getElementById('r_marge_pct').textContent = n('marge');
+    document.getElementById('r_marge').textContent = fmt(commission) + ' dhs';
+    document.getElementById('r_total').textContent = fmt(total);
+    document.getElementById('r_total_bar').textContent = fmt(total);
+    document.getElementById('r_sub2').textContent = 'dont ' + fmt(commission) + ' dhs commission';
+  }
+
+  function syncSlider() { document.getElementById('marge_slider').value = document.getElementById('marge').value; }
+  function syncInput() { document.getElementById('marge').value = document.getElementById('marge_slider').value; }
+
+  function resetAll() {
+    document.querySelectorAll('input[type="number"]').forEach(i => { if (i.id === 'marge') i.value = 20; else i.value = ''; });
+    document.getElementById('marge_slider').value = 20;
+    document.getElementById('influence-list').innerHTML = '';
+    document.getElementById('prod-list').innerHTML = '';
+    document.getElementById('av-list').innerHTML = '';
+    infId = 0; prodId = 0; avId = 0;
+    addInfluenceur(); addProdItem(); addAvItem();
+    calc();
+  }
+
+  let summaryOpen = false;
+  function toggleSummary() {
+    summaryOpen = !summaryOpen;
+    document.getElementById('summary-body').classList.toggle('open', summaryOpen);
+    document.getElementById('toggle-arrow').style.transform = summaryOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+    document.getElementById('toggle-label').textContent = summaryOpen ? 'Masquer' : 'Voir le détail';
+  }
+
+  // Init
+  addInfluenceur(); addProdItem(); addAvItem();
+  calc();
+</script>
+</body>
+</html>
