@@ -134,9 +134,7 @@
     color: var(--text);
   }
 
-  .section-body {
-    padding: 24px;
-  }
+  .section-body { padding: 24px; }
 
   .row {
     display: grid;
@@ -204,7 +202,6 @@
     border: 1px solid var(--border);
     border-radius: 3px;
     padding: 16px;
-    position: relative;
   }
 
   .grade-label {
@@ -241,11 +238,87 @@
     background: var(--surface);
     border: 1px solid var(--accent);
     border-radius: 4px;
-    padding: 32px;
     position: sticky;
-    bottom: 24px;
+    bottom: 16px;
+    overflow: hidden;
+    transition: box-shadow 0.3s;
     animation: fadeUp 0.5s 0.3s ease both;
   }
+
+  .summary:hover {
+    box-shadow: 0 0 32px rgba(200,240,74,0.08);
+  }
+
+  .summary-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .summary-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .summary-bar-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .summary-bar-total {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .summary-bar-total .cur {
+    font-size: 11px;
+    font-weight: 500;
+    margin-right: 3px;
+    vertical-align: super;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .summary-toggle {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+  }
+
+  .summary-toggle .arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    font-size: 12px;
+  }
+
+  .summary-bar:hover .summary-toggle { color: var(--accent); }
+
+  .summary-body {
+    max-height: 0;
+    overflow: hidden;
+    border-top: 1px solid transparent;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s;
+  }
+
+  .summary-body.open {
+    max-height: 500px;
+    border-top-color: var(--border);
+  }
+
+  .summary-body-inner { padding: 24px; }
 
   .summary-title {
     font-family: 'DM Mono', monospace;
@@ -253,14 +326,14 @@
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 
   .line-items {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 
   .line {
@@ -273,7 +346,6 @@
 
   .line-name { color: var(--muted); }
   .line-val { color: var(--text); font-weight: 500; }
-  .line-val.zero { color: var(--border); }
 
   .line.margin {
     border-top: 1px dashed var(--border);
@@ -299,7 +371,7 @@
   }
 
   .total-amount {
-    font-size: 42px;
+    font-size: 40px;
     font-weight: 800;
     color: var(--accent);
     letter-spacing: -0.03em;
@@ -307,7 +379,7 @@
   }
 
   .total-amount .currency {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     vertical-align: super;
     margin-right: 4px;
@@ -322,7 +394,7 @@
   }
 
   .btn-reset {
-    margin-top: 24px;
+    margin-top: 20px;
     width: 100%;
     background: transparent;
     border: 1px solid var(--border);
@@ -360,10 +432,7 @@
     gap: 12px;
   }
 
-  .marge-control input {
-    width: 80px;
-    flex-shrink: 0;
-  }
+  .marge-control input[type="number"] { width: 80px; flex-shrink: 0; }
 
   .marge-slider {
     flex: 1;
@@ -400,7 +469,7 @@
       <strong>Déclic</strong>
       Calculateur de Devis
     </div>
-    <div class="badge">Outil Interne — v1.0</div>
+    <div class="badge">Outil Interne — v1.1</div>
   </header>
 
   <div class="info-banner">
@@ -415,7 +484,6 @@
     </div>
     <div class="section-body">
       <div class="grade-grid">
-        <!-- Grade 1 -->
         <div class="grade-card">
           <div class="grade-label">Grade 1 — Associé</div>
           <div class="grade-rate">850 <span>dhs/h</span></div>
@@ -429,7 +497,6 @@
             <input type="number" id="g1_pilotage" min="0" step="0.5" placeholder="0" oninput="calc()">
           </div>
         </div>
-        <!-- Grade 2 -->
         <div class="grade-card">
           <div class="grade-label">Grade 2 — Confirmé</div>
           <div class="grade-rate">450 <span>dhs/h</span></div>
@@ -443,7 +510,6 @@
             <input type="number" id="g2_pilotage" min="0" step="0.5" placeholder="0" oninput="calc()">
           </div>
         </div>
-        <!-- Grade 3 -->
         <div class="grade-card">
           <div class="grade-label">Grade 3 — Junior</div>
           <div class="grade-rate">250 <span>dhs/h</span></div>
@@ -517,7 +583,7 @@
     </div>
   </div>
 
-  <!-- AUDIOVISUEL / CONTENT CREATION -->
+  <!-- AUDIOVISUEL -->
   <div class="section">
     <div class="section-header">
       <span class="section-tag orange">04</span>
@@ -547,7 +613,7 @@
     </div>
   </div>
 
-  <!-- MARGE + SUMMARY -->
+  <!-- MARGE -->
   <div class="section">
     <div class="section-header">
       <span class="section-tag">05</span>
@@ -566,44 +632,58 @@
   </div>
 
   <!-- RÉSULTAT -->
-  <div class="summary">
-    <div class="summary-title">— Récapitulatif Devis</div>
-    <div class="line-items">
-      <div class="line">
-        <span class="line-name">Stratégie & Conseil</span>
-        <span class="line-val" id="r_conseil">0 dhs</span>
+  <div class="summary" id="summary">
+    <div class="summary-bar" onclick="toggleSummary()">
+      <div class="summary-bar-left">
+        <span class="summary-bar-label">Total devis</span>
+        <span class="summary-bar-total"><span class="cur">DHS</span><span id="r_total_bar">0</span></span>
       </div>
-      <div class="line">
-        <span class="line-name">Influence</span>
-        <span class="line-val" id="r_influence">0 dhs</span>
-      </div>
-      <div class="line">
-        <span class="line-name">Production</span>
-        <span class="line-val" id="r_prod">0 dhs</span>
-      </div>
-      <div class="line">
-        <span class="line-name">Audiovisuel</span>
-        <span class="line-val" id="r_av">0 dhs</span>
-      </div>
-      <div class="line margin">
-        <span class="line-name">Sous-total HT</span>
-        <span class="line-val" id="r_subtotal">0 dhs</span>
-      </div>
-      <div class="line">
-        <span class="line-name">Marge agence (<span id="r_marge_pct">20</span>%)</span>
-        <span class="line-val" id="r_marge">0 dhs</span>
+      <div class="summary-toggle">
+        <span id="toggle-label">Voir le détail</span>
+        <span class="arrow" id="toggle-arrow">↑</span>
       </div>
     </div>
-    <div class="total-row">
-      <div>
-        <div class="total-label">Total devis</div>
-        <div class="sub-total" id="r_sub2"></div>
-      </div>
-      <div style="text-align:right">
-        <div class="total-amount"><span class="currency">DHS</span><span id="r_total">0</span></div>
+    <div class="summary-body" id="summary-body">
+      <div class="summary-body-inner">
+        <div class="summary-title">— Récapitulatif Devis</div>
+        <div class="line-items">
+          <div class="line">
+            <span class="line-name">Stratégie & Conseil</span>
+            <span class="line-val" id="r_conseil">0 dhs</span>
+          </div>
+          <div class="line">
+            <span class="line-name">Influence</span>
+            <span class="line-val" id="r_influence">0 dhs</span>
+          </div>
+          <div class="line">
+            <span class="line-name">Production</span>
+            <span class="line-val" id="r_prod">0 dhs</span>
+          </div>
+          <div class="line">
+            <span class="line-name">Audiovisuel</span>
+            <span class="line-val" id="r_av">0 dhs</span>
+          </div>
+          <div class="line margin">
+            <span class="line-name">Sous-total HT</span>
+            <span class="line-val" id="r_subtotal">0 dhs</span>
+          </div>
+          <div class="line">
+            <span class="line-name">Marge agence (<span id="r_marge_pct">20</span>%)</span>
+            <span class="line-val" id="r_marge">0 dhs</span>
+          </div>
+        </div>
+        <div class="total-row">
+          <div>
+            <div class="total-label">Total devis</div>
+            <div class="sub-total" id="r_sub2"></div>
+          </div>
+          <div style="text-align:right">
+            <div class="total-amount"><span class="currency">DHS</span><span id="r_total">0</span></div>
+          </div>
+        </div>
+        <button class="btn-reset" onclick="resetAll()">↺ Réinitialiser</button>
       </div>
     </div>
-    <button class="btn-reset" onclick="resetAll()">↺ Réinitialiser</button>
   </div>
 
 </div>
@@ -613,22 +693,14 @@
   function fmt(v) { return Math.round(v).toLocaleString('fr-FR'); }
 
   function calc() {
-    // Conseil
     const g1 = 850 * (n('g1_concept') + n('g1_pilotage'));
     const g2 = 450 * (n('g2_concept') + n('g2_pilotage'));
     const g3 = 250 * (n('g3_concept') + n('g3_pilotage'));
     const conseil = g1 + g2 + g3;
-
-    // Influence
     const eps = Math.max(1, n('episodes'));
     const influence = n('influence') * eps;
-
-    // Prod
     const prod = n('prod_micro') + n('prod_stand') + n('prod_mono') + n('prod_autre');
-
-    // AV
     const av = n('av_jours') * n('av_tarif') + n('av_postprod') + n('av_autre');
-
     const subtotal = conseil + influence + prod + av;
     const margePct = n('marge') / 100;
     const marge = subtotal * margePct;
@@ -642,6 +714,7 @@
     document.getElementById('r_marge_pct').textContent = n('marge');
     document.getElementById('r_marge').textContent = fmt(marge) + ' dhs';
     document.getElementById('r_total').textContent = fmt(total);
+    document.getElementById('r_total_bar').textContent = fmt(total);
     document.getElementById('r_sub2').textContent = 'dont ' + fmt(marge) + ' dhs marge';
   }
 
@@ -663,6 +736,17 @@
     document.getElementById('marge_slider').value = 20;
     document.getElementById('episodes').value = '';
     calc();
+  }
+
+  let summaryOpen = false;
+  function toggleSummary() {
+    summaryOpen = !summaryOpen;
+    const body = document.getElementById('summary-body');
+    const arrow = document.getElementById('toggle-arrow');
+    const label = document.getElementById('toggle-label');
+    body.classList.toggle('open', summaryOpen);
+    arrow.style.transform = summaryOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+    label.textContent = summaryOpen ? 'Masquer' : 'Voir le détail';
   }
 
   calc();
