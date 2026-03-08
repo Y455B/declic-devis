@@ -24,7 +24,7 @@
     color: var(--text);
     font-family: 'Syne', sans-serif;
     min-height: 100vh;
-    padding: 40px 20px;
+    padding: 40px 20px 120px;
   }
 
   body::before {
@@ -37,12 +37,7 @@
     z-index: 0;
   }
 
-  .container {
-    max-width: 880px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-  }
+  .container { max-width: 880px; margin: 0 auto; position: relative; z-index: 1; }
 
   header {
     display: flex;
@@ -53,45 +48,12 @@
     border-bottom: 1px solid var(--border);
   }
 
-  .logo {
-    font-size: 11px;
-    font-family: 'DM Mono', monospace;
-    letter-spacing: 0.3em;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
+  .logo { font-size: 11px; font-family: 'DM Mono', monospace; letter-spacing: 0.3em; color: var(--muted); text-transform: uppercase; }
+  .logo strong { display: block; font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; margin-bottom: 2px; }
 
-  .logo strong {
-    display: block;
-    font-family: 'Syne', sans-serif;
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--accent);
-    letter-spacing: -0.02em;
-    margin-bottom: 2px;
-  }
+  .badge { font-family: 'DM Mono', monospace; font-size: 10px; background: var(--border); color: var(--muted); padding: 4px 10px; border-radius: 2px; letter-spacing: 0.15em; text-transform: uppercase; margin-top: 6px; }
 
-  .badge {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    background: var(--border);
-    color: var(--muted);
-    padding: 4px 10px;
-    border-radius: 2px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-top: 6px;
-  }
-
-  .section {
-    margin-bottom: 32px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-    animation: fadeUp 0.4s ease both;
-  }
-
+  .section { margin-bottom: 32px; background: var(--card); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; animation: fadeUp 0.4s ease both; }
   .section:nth-child(2) { animation-delay: 0.05s; }
   .section:nth-child(3) { animation-delay: 0.1s; }
   .section:nth-child(4) { animation-delay: 0.15s; }
@@ -102,65 +64,22 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 18px 24px;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .section-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--bg);
-    background: var(--accent);
-    padding: 3px 8px;
-    border-radius: 2px;
-    font-weight: 500;
-  }
-
+  .section-header { display: flex; align-items: center; gap: 12px; padding: 18px 24px; background: var(--surface); border-bottom: 1px solid var(--border); }
+  .section-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--bg); background: var(--accent); padding: 3px 8px; border-radius: 2px; font-weight: 500; }
   .section-tag.pink { background: var(--accent2); }
   .section-tag.blue { background: #4ab8f0; }
   .section-tag.orange { background: #f0a04a; }
-
-  .section-title {
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    color: var(--text);
-  }
-
+  .section-title { font-size: 14px; font-weight: 700; letter-spacing: 0.05em; color: var(--text); }
   .section-body { padding: 24px; }
 
-  .row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
   .row.three { grid-template-columns: 1fr 1fr 1fr; }
-  .row.full { grid-template-columns: 1fr; }
 
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
+  .field { display: flex; flex-direction: column; gap: 6px; }
 
-  label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
+  label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
 
-  input[type="number"], input[type="text"], select {
+  input[type="number"], input[type="text"], textarea {
     background: var(--bg);
     border: 1px solid var(--border);
     color: var(--text);
@@ -173,7 +92,9 @@
     -moz-appearance: textfield;
   }
 
-  input[type="number"]:focus, input[type="text"]:focus, select:focus {
+  textarea { resize: vertical; min-height: 70px; font-size: 12px; line-height: 1.5; }
+
+  input[type="number"]:focus, input[type="text"]:focus, textarea:focus {
     outline: none;
     border-color: var(--accent);
     box-shadow: 0 0 0 2px rgba(200,240,74,0.1);
@@ -182,58 +103,110 @@
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
 
-  select option { background: var(--bg); }
+  .hint { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); margin-top: 2px; }
 
-  .hint {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: var(--muted);
-    margin-top: 2px;
-  }
+  /* Grades */
+  .grade-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .grade-card { background: var(--bg); border: 1px solid var(--border); border-radius: 3px; padding: 16px; }
+  .grade-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .grade-rate { font-size: 18px; font-weight: 800; color: var(--accent); margin-bottom: 12px; }
+  .grade-rate span { font-size: 11px; font-weight: 400; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .divider { height: 1px; background: var(--border); margin: 4px 0 16px; }
 
-  .grade-grid {
+  /* Influence forfaits */
+  .influence-grid { display: flex; flex-direction: column; gap: 10px; }
+  .influence-row {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-  }
-
-  .grade-card {
+    grid-template-columns: 1fr 140px 36px;
+    gap: 10px;
+    align-items: center;
     background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 3px;
-    padding: 16px;
+    padding: 12px 14px;
+    animation: fadeUp 0.2s ease both;
+  }
+  .influence-row .inf-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+
+  /* Dynamic item table */
+  .items-table { width: 100%; border-collapse: collapse; }
+  .items-table thead tr { border-bottom: 1px solid var(--border); }
+  .items-table th { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); padding: 0 8px 10px; text-align: left; font-weight: 400; }
+  .items-table th:last-child { width: 36px; }
+  .items-table th.num { width: 90px; }
+  .items-table th.prix { width: 120px; }
+  .items-table th.total { width: 110px; text-align: right; }
+
+  .item-row td { padding: 6px 8px; vertical-align: middle; }
+  .item-row td.total-cell {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    text-align: right;
+    white-space: nowrap;
   }
 
-  .grade-label {
+  .item-row input[type="text"] { font-size: 13px; padding: 8px 10px; }
+  .item-row input[type="number"] { font-size: 13px; padding: 8px 10px; }
+
+  .section-subtotal {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--border);
     font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.2em;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .section-subtotal strong { color: var(--text); font-size: 14px; }
+
+  .btn-add {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    background: transparent;
+    border: 1px dashed var(--border);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 4px;
+    padding: 9px 16px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    justify-content: center;
   }
+  .btn-add:hover { border-color: var(--accent); color: var(--accent); }
 
-  .grade-rate {
-    font-size: 18px;
-    font-weight: 800;
-    color: var(--accent);
-    margin-bottom: 12px;
-  }
-
-  .grade-rate span {
-    font-size: 11px;
-    font-weight: 400;
+  .btn-del {
+    background: transparent;
+    border: 1px solid var(--border);
     color: var(--muted);
     font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    width: 32px; height: 32px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
   }
+  .btn-del:hover { border-color: var(--accent2); color: var(--accent2); }
 
-  .divider {
-    height: 1px;
-    background: var(--border);
-    margin: 4px 0 16px;
-  }
+  /* Commission */
+  .marge-control { display: flex; align-items: center; gap: 12px; }
+  .marge-control input[type="number"] { width: 80px; flex-shrink: 0; }
+  .marge-slider { flex: 1; -webkit-appearance: none; height: 2px; background: var(--border); border-radius: 2px; outline: none; border: none; padding: 0; }
+  .marge-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); cursor: pointer; }
 
-  /* Summary panel */
+  /* Summary */
   .summary {
     background: var(--surface);
     border: 1px solid var(--accent);
@@ -244,220 +217,46 @@
     transition: box-shadow 0.3s;
     animation: fadeUp 0.5s 0.3s ease both;
   }
+  .summary:hover { box-shadow: 0 0 32px rgba(200,240,74,0.08); }
 
-  .summary:hover {
-    box-shadow: 0 0 32px rgba(200,240,74,0.08);
-  }
-
-  .summary-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 24px;
-    cursor: pointer;
-    user-select: none;
-  }
-
-  .summary-bar-left {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .summary-bar-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .summary-bar-total {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--accent);
-    letter-spacing: -0.02em;
-    line-height: 1;
-  }
-
-  .summary-bar-total .cur {
-    font-size: 11px;
-    font-weight: 500;
-    margin-right: 3px;
-    vertical-align: super;
-    font-family: 'DM Mono', monospace;
-  }
-
-  .summary-toggle {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: color 0.2s;
-  }
-
-  .summary-toggle .arrow {
-    display: inline-block;
-    transition: transform 0.3s ease;
-    font-size: 12px;
-  }
-
+  .summary-bar { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; cursor: pointer; user-select: none; }
+  .summary-bar-left { display: flex; align-items: center; gap: 16px; }
+  .summary-bar-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); }
+  .summary-bar-total { font-size: 20px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; line-height: 1; }
+  .summary-bar-total .cur { font-size: 11px; font-weight: 500; margin-right: 3px; vertical-align: super; font-family: 'DM Mono', monospace; }
+  .summary-toggle { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
+  .summary-toggle .arrow { display: inline-block; transition: transform 0.3s ease; font-size: 12px; }
   .summary-bar:hover .summary-toggle { color: var(--accent); }
 
-  .summary-body {
-    max-height: 0;
-    overflow: hidden;
-    border-top: 1px solid transparent;
-    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s;
-  }
-
-  .summary-body.open {
-    max-height: 500px;
-    border-top-color: var(--border);
-  }
-
+  .summary-body { max-height: 0; overflow: hidden; border-top: 1px solid transparent; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), border-color 0.3s; }
+  .summary-body.open { max-height: 600px; border-top-color: var(--border); }
   .summary-body-inner { padding: 24px; }
 
-  .summary-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 20px;
-  }
+  .summary-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
 
-  .line-items {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-
-  .line {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-  }
-
+  .line-items { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .line { display: flex; justify-content: space-between; align-items: center; font-family: 'DM Mono', monospace; font-size: 12px; }
   .line-name { color: var(--muted); }
   .line-val { color: var(--text); font-weight: 500; }
+  .line.margin { border-top: 1px dashed var(--border); padding-top: 10px; margin-top: 4px; }
 
-  .line.margin {
-    border-top: 1px dashed var(--border);
-    padding-top: 10px;
-    margin-top: 4px;
-  }
+  .total-row { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid var(--accent); padding-top: 20px; margin-top: 4px; }
+  .total-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .total-amount { font-size: 40px; font-weight: 800; color: var(--accent); letter-spacing: -0.03em; line-height: 1; }
+  .total-amount .currency { font-size: 16px; font-weight: 600; vertical-align: super; margin-right: 4px; }
+  .sub-total { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); text-align: right; margin-top: 4px; }
 
-  .total-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    border-top: 1px solid var(--accent);
-    padding-top: 20px;
-    margin-top: 4px;
-  }
+  .btn-reset { margin-top: 20px; width: 100%; background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; padding: 12px; border-radius: 3px; cursor: pointer; transition: all 0.2s; }
+  .btn-reset:hover { border-color: var(--muted); color: var(--text); }
 
-  .total-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-
-  .total-amount {
-    font-size: 40px;
-    font-weight: 800;
-    color: var(--accent);
-    letter-spacing: -0.03em;
-    line-height: 1;
-  }
-
-  .total-amount .currency {
-    font-size: 16px;
-    font-weight: 600;
-    vertical-align: super;
-    margin-right: 4px;
-  }
-
-  .sub-total {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    text-align: right;
-    margin-top: 4px;
-  }
-
-  .btn-reset {
-    margin-top: 20px;
-    width: 100%;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 12px;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .btn-reset:hover {
-    border-color: var(--muted);
-    color: var(--text);
-  }
-
-  .info-banner {
-    background: rgba(200,240,74,0.04);
-    border: 1px solid rgba(200,240,74,0.15);
-    border-radius: 3px;
-    padding: 12px 16px;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    line-height: 1.6;
-    margin-bottom: 24px;
-  }
-
-  .marge-control {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .marge-control input[type="number"] { width: 80px; flex-shrink: 0; }
-
-  .marge-slider {
-    flex: 1;
-    -webkit-appearance: none;
-    height: 2px;
-    background: var(--border);
-    border-radius: 2px;
-    outline: none;
-    border: none;
-    padding: 0;
-  }
-
-  .marge-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: var(--accent);
-    cursor: pointer;
-  }
+  .info-banner { background: rgba(200,240,74,0.04); border: 1px solid rgba(200,240,74,0.15); border-radius: 3px; padding: 12px 16px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
 
   @media (max-width: 640px) {
     .row, .row.three, .grade-grid { grid-template-columns: 1fr; }
     header { flex-direction: column; gap: 12px; }
     .total-amount { font-size: 32px; }
+    .influence-row { grid-template-columns: 1fr 120px 36px; }
+    .items-table th.num, .items-table th.prix { width: auto; }
   }
 </style>
 </head>
@@ -473,10 +272,10 @@
   </header>
 
   <div class="info-banner">
-    ⚡ Tous les champs sont optionnels. Remplis uniquement les postes concernés par le concept. Le total se calcule en temps réel.
+    ⚡ Tous les champs sont optionnels. Remplis uniquement les postes concernés. Le total se calcule en temps réel.
   </div>
 
-  <!-- STRATÉGIE / CONSEIL -->
+  <!-- 01 STRATÉGIE -->
   <div class="section">
     <div class="section-header">
       <span class="section-tag">01</span>
@@ -527,101 +326,76 @@
     </div>
   </div>
 
-  <!-- INFLUENCE -->
+  <!-- 02 INFLUENCE -->
   <div class="section">
     <div class="section-header">
       <span class="section-tag pink">02</span>
       <span class="section-title">Influence</span>
     </div>
     <div class="section-body">
-      <div class="row">
-        <div class="field">
-          <label>Cachet influenceur(s) — Total (dhs)</label>
-          <input type="number" id="influence" min="0" step="100" placeholder="0" oninput="calc()">
-          <span class="hint">Somme brute de tous les cachets négociés</span>
-        </div>
-        <div class="field">
-          <label>Nb d'épisodes / activations</label>
-          <input type="number" id="episodes" min="1" step="1" placeholder="1" oninput="calc()">
-          <span class="hint">Multiplie le cachet par le nb d'épisodes</span>
-        </div>
-      </div>
+      <div class="influence-grid" id="influence-list"></div>
+      <button class="btn-add" onclick="addInfluenceur()">+ Ajouter un influenceur</button>
+      <div class="section-subtotal">Sous-total influence : <strong id="st_influence">0 dhs</strong></div>
     </div>
   </div>
 
-  <!-- PROD -->
+  <!-- 03 PROD -->
   <div class="section">
     <div class="section-header">
       <span class="section-tag blue">03</span>
       <span class="section-title">Production (Département Prod)</span>
     </div>
     <div class="section-body">
-      <div class="row three">
-        <div class="field">
-          <label>Micro-contenu (dhs)</label>
-          <input type="number" id="prod_micro" min="0" step="100" placeholder="0" oninput="calc()">
-        </div>
-        <div class="field">
-          <label>Stand / Dispositif (dhs)</label>
-          <input type="number" id="prod_stand" min="0" step="100" placeholder="0" oninput="calc()">
-        </div>
-        <div class="field">
-          <label>Monolithe (dhs)</label>
-          <input type="number" id="prod_mono" min="0" step="100" placeholder="0" oninput="calc()">
-        </div>
-      </div>
-      <div class="row">
-        <div class="field">
-          <label>Autre poste Prod (dhs)</label>
-          <input type="number" id="prod_autre" min="0" step="100" placeholder="0" oninput="calc()">
-        </div>
-        <div class="field">
-          <label>Libellé poste</label>
-          <input type="text" id="prod_autre_label" placeholder="ex : Impression, Logistique…">
-        </div>
-      </div>
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th>Item / Prestation</th>
+            <th class="num">Qté</th>
+            <th class="prix">Prix unitaire</th>
+            <th class="total">Total</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="prod-list"></tbody>
+      </table>
+      <button class="btn-add" onclick="addItem('prod')">+ Ajouter un item</button>
+      <div class="section-subtotal">Sous-total prod : <strong id="st_prod">0 dhs</strong></div>
     </div>
   </div>
 
-  <!-- AUDIOVISUEL -->
+  <!-- 04 AUDIOVISUEL -->
   <div class="section">
     <div class="section-header">
       <span class="section-tag orange">04</span>
       <span class="section-title">Audiovisuel (Content Creation)</span>
     </div>
     <div class="section-body">
-      <div class="row">
-        <div class="field">
-          <label>Tournage — nb jours</label>
-          <input type="number" id="av_jours" min="0" step="0.5" placeholder="0" oninput="calc()">
-        </div>
-        <div class="field">
-          <label>Tarif journée tournage (dhs)</label>
-          <input type="number" id="av_tarif" min="0" step="100" placeholder="0" oninput="calc()">
-        </div>
-      </div>
-      <div class="row">
-        <div class="field">
-          <label>Post-production forfait (dhs)</label>
-          <input type="number" id="av_postprod" min="0" step="100" placeholder="0" oninput="calc()">
-        </div>
-        <div class="field">
-          <label>Autre poste AV (dhs)</label>
-          <input type="number" id="av_autre" min="0" step="100" placeholder="0" oninput="calc()">
-        </div>
-      </div>
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th>Item / Prestation</th>
+            <th class="num">Qté</th>
+            <th class="prix">Prix unitaire</th>
+            <th class="total">Total</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="av-list"></tbody>
+      </table>
+      <button class="btn-add" onclick="addItem('av')">+ Ajouter un item</button>
+      <div class="section-subtotal">Sous-total AV : <strong id="st_av">0 dhs</strong></div>
     </div>
   </div>
 
-  <!-- MARGE -->
+  <!-- 05 COMMISSION -->
   <div class="section">
     <div class="section-header">
       <span class="section-tag">05</span>
-      <span class="section-title">Marge Agence</span>
+      <span class="section-title">Commission Agence</span>
     </div>
     <div class="section-body">
       <div class="field">
-        <label>Taux de marge (%)</label>
+        <label>Taux de commission (%)</label>
         <div class="marge-control">
           <input type="number" id="marge" min="0" max="100" step="1" value="20" oninput="syncSlider(); calc()">
           <input type="range" class="marge-slider" id="marge_slider" min="0" max="60" step="1" value="20" oninput="syncInput(); calc()">
@@ -647,30 +421,12 @@
       <div class="summary-body-inner">
         <div class="summary-title">— Récapitulatif Devis</div>
         <div class="line-items">
-          <div class="line">
-            <span class="line-name">Stratégie & Conseil</span>
-            <span class="line-val" id="r_conseil">0 dhs</span>
-          </div>
-          <div class="line">
-            <span class="line-name">Influence</span>
-            <span class="line-val" id="r_influence">0 dhs</span>
-          </div>
-          <div class="line">
-            <span class="line-name">Production</span>
-            <span class="line-val" id="r_prod">0 dhs</span>
-          </div>
-          <div class="line">
-            <span class="line-name">Audiovisuel</span>
-            <span class="line-val" id="r_av">0 dhs</span>
-          </div>
-          <div class="line margin">
-            <span class="line-name">Sous-total HT</span>
-            <span class="line-val" id="r_subtotal">0 dhs</span>
-          </div>
-          <div class="line">
-            <span class="line-name">Marge agence (<span id="r_marge_pct">20</span>%)</span>
-            <span class="line-val" id="r_marge">0 dhs</span>
-          </div>
+          <div class="line"><span class="line-name">Stratégie & Conseil</span><span class="line-val" id="r_conseil">0 dhs</span></div>
+          <div class="line"><span class="line-name">Influence</span><span class="line-val" id="r_influence">0 dhs</span></div>
+          <div class="line"><span class="line-name">Production</span><span class="line-val" id="r_prod">0 dhs</span></div>
+          <div class="line"><span class="line-name">Audiovisuel</span><span class="line-val" id="r_av">0 dhs</span></div>
+          <div class="line margin"><span class="line-name">Sous-total HT</span><span class="line-val" id="r_subtotal">0 dhs</span></div>
+          <div class="line"><span class="line-name">Commission agence (<span id="r_marge_pct">20</span>%)</span><span class="line-val" id="r_marge">0 dhs</span></div>
         </div>
         <div class="total-row">
           <div>
@@ -692,40 +448,115 @@
   function n(id) { return parseFloat(document.getElementById(id).value) || 0; }
   function fmt(v) { return Math.round(v).toLocaleString('fr-FR'); }
 
-  function calc() {
-    const g1 = 850 * (n('g1_concept') + n('g1_pilotage'));
-    const g2 = 450 * (n('g2_concept') + n('g2_pilotage'));
-    const g3 = 250 * (n('g3_concept') + n('g3_pilotage'));
-    const conseil = g1 + g2 + g3;
-    const eps = Math.max(1, n('episodes'));
-    const influence = n('influence') * eps;
-    const prod = n('prod_micro') + n('prod_stand') + n('prod_mono') + n('prod_autre');
-    const av = n('av_jours') * n('av_tarif') + n('av_postprod') + n('av_autre');
-    const subtotal = conseil + influence + prod + av;
-    const margePct = n('marge') / 100;
-    const marge = subtotal * margePct;
-    const total = subtotal + marge;
+  // ── INFLUENCE ──────────────────────────────────────────
+  let infId = 0;
+  function addInfluenceur() {
+    const id = ++infId;
+    const div = document.createElement('div');
+    div.className = 'influence-row';
+    div.id = 'inf_' + id;
+    div.innerHTML = `
+      <div>
+        <div class="inf-label">Influenceur</div>
+        <input type="text" placeholder="Nom / handle" style="background:var(--surface);border:none;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;padding:4px 0;width:100%;outline:none;">
+      </div>
+      <div>
+        <div class="inf-label">Forfait (dhs)</div>
+        <input type="number" min="0" step="100" placeholder="0" oninput="calc()" style="background:var(--surface);border:none;border-bottom:1px solid var(--border);color:var(--accent);font-family:'DM Mono',monospace;font-size:15px;font-weight:700;padding:4px 0;width:100%;outline:none;-moz-appearance:textfield;">
+      </div>
+      <button class="btn-del" onclick="removeRow('inf_${id}')">×</button>
+    `;
+    document.getElementById('influence-list').appendChild(div);
+    div.querySelector('input[type="number"]').addEventListener('input', calc);
+  }
 
+  // ── ITEMS (PROD / AV) ──────────────────────────────────
+  let itemId = 0;
+  function addItem(section) {
+    const id = ++itemId;
+    const tbody = document.getElementById(section + '-list');
+    const tr = document.createElement('tr');
+    tr.className = 'item-row';
+    tr.id = 'item_' + id;
+    tr.innerHTML = `
+      <td><input type="text" placeholder="ex : Journée tournage, Montage…"></td>
+      <td><input type="number" min="0" step="1" placeholder="1" value="1" oninput="updateItemTotal('${id}')" style="text-align:center;"></td>
+      <td><input type="number" min="0" step="100" placeholder="0" oninput="updateItemTotal('${id}')"></td>
+      <td class="total-cell" id="itotal_${id}">0 dhs</td>
+      <td><button class="btn-del" onclick="removeRow('item_${id}')">×</button></td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  function updateItemTotal(id) {
+    const row = document.getElementById('item_' + id);
+    if (!row) return;
+    const inputs = row.querySelectorAll('input[type="number"]');
+    const qty = parseFloat(inputs[0].value) || 0;
+    const prix = parseFloat(inputs[1].value) || 0;
+    document.getElementById('itotal_' + id).textContent = fmt(qty * prix) + ' dhs';
+    calc();
+  }
+
+  function removeRow(id) {
+    const el = document.getElementById(id);
+    if (el) { el.remove(); calc(); }
+  }
+
+  // ── CALCUL GLOBAL ──────────────────────────────────────
+  function calc() {
+    // Conseil
+    const conseil = 850*(n('g1_concept')+n('g1_pilotage')) + 450*(n('g2_concept')+n('g2_pilotage')) + 250*(n('g3_concept')+n('g3_pilotage'));
+
+    // Influence — somme des forfaits
+    let influence = 0;
+    document.querySelectorAll('#influence-list .influence-row').forEach(row => {
+      const inp = row.querySelector('input[type="number"]');
+      influence += parseFloat(inp?.value) || 0;
+    });
+
+    // Prod — somme qté × prix
+    let prod = 0;
+    document.querySelectorAll('#prod-list .item-row').forEach(row => {
+      const inputs = row.querySelectorAll('input[type="number"]');
+      prod += (parseFloat(inputs[0]?.value)||0) * (parseFloat(inputs[1]?.value)||0);
+    });
+
+    // AV — idem
+    let av = 0;
+    document.querySelectorAll('#av-list .item-row').forEach(row => {
+      const inputs = row.querySelectorAll('input[type="number"]');
+      av += (parseFloat(inputs[0]?.value)||0) * (parseFloat(inputs[1]?.value)||0);
+    });
+
+    const subtotal = conseil + influence + prod + av;
+    const commPct = n('marge') / 100;
+    const commission = subtotal * commPct;
+    const total = subtotal + commission;
+
+    // Sous-totaux sections
+    document.getElementById('st_influence').textContent = fmt(influence) + ' dhs';
+    document.getElementById('st_prod').textContent = fmt(prod) + ' dhs';
+    document.getElementById('st_av').textContent = fmt(av) + ' dhs';
+
+    // Récap
     document.getElementById('r_conseil').textContent = fmt(conseil) + ' dhs';
     document.getElementById('r_influence').textContent = fmt(influence) + ' dhs';
     document.getElementById('r_prod').textContent = fmt(prod) + ' dhs';
     document.getElementById('r_av').textContent = fmt(av) + ' dhs';
     document.getElementById('r_subtotal').textContent = fmt(subtotal) + ' dhs';
     document.getElementById('r_marge_pct').textContent = n('marge');
-    document.getElementById('r_marge').textContent = fmt(marge) + ' dhs';
+    document.getElementById('r_marge').textContent = fmt(commission) + ' dhs';
     document.getElementById('r_total').textContent = fmt(total);
     document.getElementById('r_total_bar').textContent = fmt(total);
-    document.getElementById('r_sub2').textContent = 'dont ' + fmt(marge) + ' dhs marge';
+    document.getElementById('r_sub2').textContent = 'dont ' + fmt(commission) + ' dhs commission';
   }
 
   function syncSlider() {
     document.getElementById('marge_slider').value = document.getElementById('marge').value;
-    document.getElementById('r_marge_pct').textContent = document.getElementById('marge').value;
   }
-
   function syncInput() {
     document.getElementById('marge').value = document.getElementById('marge_slider').value;
-    document.getElementById('r_marge_pct').textContent = document.getElementById('marge_slider').value;
   }
 
   function resetAll() {
@@ -734,21 +565,25 @@
       else i.value = '';
     });
     document.getElementById('marge_slider').value = 20;
-    document.getElementById('episodes').value = '';
+    document.getElementById('influence-list').innerHTML = '';
+    document.getElementById('prod-list').innerHTML = '';
+    document.getElementById('av-list').innerHTML = '';
+    infId = 0; itemId = 0;
     calc();
   }
 
   let summaryOpen = false;
   function toggleSummary() {
     summaryOpen = !summaryOpen;
-    const body = document.getElementById('summary-body');
-    const arrow = document.getElementById('toggle-arrow');
-    const label = document.getElementById('toggle-label');
-    body.classList.toggle('open', summaryOpen);
-    arrow.style.transform = summaryOpen ? 'rotate(180deg)' : 'rotate(0deg)';
-    label.textContent = summaryOpen ? 'Masquer' : 'Voir le détail';
+    document.getElementById('summary-body').classList.toggle('open', summaryOpen);
+    document.getElementById('toggle-arrow').style.transform = summaryOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+    document.getElementById('toggle-label').textContent = summaryOpen ? 'Masquer' : 'Voir le détail';
   }
 
+  // Init — 1 ligne par section par défaut
+  addInfluenceur();
+  addItem('prod');
+  addItem('av');
   calc();
 </script>
 </body>
