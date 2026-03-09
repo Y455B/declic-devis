@@ -7,14 +7,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0f;
-    --surface: #111118;
-    --border: #1e1e2e;
-    --accent: #c8f04a;
-    --accent2: #f04a8a;
-    --text: #e8e8f0;
-    --muted: #5a5a72;
-    --card: #14141e;
+    --bg: #0c0a0a;
+    --surface: #131212;
+    --border: #2a1f1f;
+    --accent: #e8372a;
+    --accent2: #ff6b5b;
+    --text: #e8e8e8;
+    --muted: #7a7a7a;
+    --card: #171414;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,7 +32,7 @@
     position: fixed;
     top: -200px; left: -200px;
     width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(200,240,74,0.06) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(232,55,42,0.07) 0%, transparent 70%);
     pointer-events: none;
     z-index: 0;
   }
@@ -93,7 +93,7 @@
   input[type="number"]:focus, input[type="text"]:focus {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(200,240,74,0.1);
+    box-shadow: 0 0 0 2px rgba(232,55,42,0.15);
   }
 
   input[type="number"]::-webkit-outer-spin-button,
@@ -178,7 +178,7 @@
     position: sticky; bottom: 16px; overflow: hidden;
     transition: box-shadow 0.3s; animation: fadeUp 0.5s 0.3s ease both;
   }
-  .summary:hover { box-shadow: 0 0 32px rgba(200,240,74,0.08); }
+  .summary:hover { box-shadow: 0 0 32px rgba(232,55,42,0.12); }
 
   .summary-bar { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; cursor: pointer; user-select: none; }
   .summary-bar-left { display: flex; align-items: center; gap: 16px; }
@@ -209,7 +209,7 @@
   .btn-reset { margin-top: 20px; width: 100%; background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; padding: 12px; border-radius: 3px; cursor: pointer; transition: all 0.2s; }
   .btn-reset:hover { border-color: var(--muted); color: var(--text); }
 
-  .info-banner { background: rgba(200,240,74,0.04); border: 1px solid rgba(200,240,74,0.15); border-radius: 3px; padding: 12px 16px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
+  .info-banner { background: rgba(232,55,42,0.04); border: 1px solid rgba(232,55,42,0.15); border-radius: 3px; padding: 12px 16px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
 
   @media (max-width: 640px) {
     .row, .row.three, .grade-grid { grid-template-columns: 1fr; }
@@ -229,7 +229,7 @@
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
       <div class="badge">Outil Interne — v1.3</div>
-      <button onclick="resetAll()" style="background:transparent;border:1px solid #2a0a14;color:#f04a8a;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;padding:5px 12px;border-radius:2px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(240,74,138,0.08)'" onmouseout="this.style.background='transparent'">↺ Réinitialiser</button>
+      <button onclick="resetAll()" style="background:transparent;border:1px solid #3a1a1a;color:#e8372a;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;padding:5px 12px;border-radius:2px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(232,55,42,0.08)'" onmouseout="this.style.background='transparent'">↺ Réinitialiser</button>
     </div>
   </header>
 
