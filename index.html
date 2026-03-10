@@ -24,7 +24,6 @@
     color: var(--text);
     font-family: 'Syne', sans-serif;
     min-height: 100vh;
-    padding: 40px 20px 120px;
   }
 
   body::before {
@@ -35,6 +34,132 @@
     background: radial-gradient(circle, rgba(232,55,42,0.07) 0%, transparent 70%);
     pointer-events: none;
     z-index: 0;
+  }
+
+  /* ── LOGIN ─────────────────────────────────────────── */
+  #login-screen {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    background: var(--bg);
+  }
+
+  .login-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 48px 40px;
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    animation: fadeUp 0.4s ease both;
+    position: relative;
+    z-index: 1;
+  }
+
+  .login-logo {
+    text-align: center;
+  }
+
+  .login-logo strong {
+    display: block;
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+
+  .login-logo span {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .login-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .login-field label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .login-field input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 15px;
+    padding: 12px 16px;
+    border-radius: 3px;
+    width: 100%;
+    letter-spacing: 0.1em;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .login-field input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(232,55,42,0.15);
+  }
+
+  .login-btn {
+    background: var(--accent);
+    border: none;
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 13px;
+    border-radius: 3px;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+
+  .login-btn:hover { opacity: 0.88; }
+  .login-btn:active { transform: scale(0.99); }
+
+  .login-error {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--accent2);
+    text-align: center;
+    letter-spacing: 0.1em;
+    min-height: 16px;
+    animation: shake 0.3s ease;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+
+  /* ── APP ───────────────────────────────────────────── */
+  #app {
+    display: none;
+    padding: 40px 20px 120px;
+  }
+
+  #app.visible { display: block; animation: fadeUp 0.4s ease both; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   .container { max-width: 880px; margin: 0 auto; position: relative; z-index: 1; }
@@ -53,11 +178,6 @@
   .section:nth-child(3) { animation-delay: 0.1s; }
   .section:nth-child(4) { animation-delay: 0.15s; }
   .section:nth-child(5) { animation-delay: 0.2s; }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
 
   .section-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; background: var(--surface); border-bottom: 1px solid var(--border); }
   .section-header-left { display: flex; align-items: center; gap: 12px; }
@@ -98,40 +218,13 @@
 
   .hint { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); margin-top: 2px; line-height: 1.5; }
 
-  /* ── MODE TOGGLE ──────────────────────────────────── */
-  .mode-toggle {
-    display: flex;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-
-  .mode-toggle-btn {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 8px 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-    border-right: 1px solid var(--border);
-  }
-
+  /* Mode toggle */
+  .mode-toggle { display: flex; background: var(--bg); border: 1px solid var(--border); border-radius: 3px; overflow: hidden; }
+  .mode-toggle-btn { flex: 1; background: transparent; border: none; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; padding: 8px 12px; cursor: pointer; transition: all 0.2s; border-right: 1px solid var(--border); }
   .mode-toggle-btn:last-child { border-right: none; }
-
-  .mode-toggle-btn.active {
-    background: rgba(232,55,42,0.1);
-    color: var(--accent);
-  }
-
+  .mode-toggle-btn.active { background: rgba(232,55,42,0.1); color: var(--accent); }
   .mode-toggle-btn:hover:not(.active) { color: var(--text); }
 
-  /* ── MODE PANELS ──────────────────────────────────── */
   .mode-panel { display: none; }
   .mode-panel.active { display: block; animation: fadeUp 0.2s ease both; }
 
@@ -143,80 +236,30 @@
   .grade-rate span { font-size: 11px; font-weight: 400; color: var(--muted); font-family: 'DM Mono', monospace; }
   .divider { height: 1px; background: var(--border); margin: 4px 0 16px; }
 
-  /* ── COMPLEXITÉ ───────────────────────────────────── */
+  /* Complexité */
   .complexite-section { margin-top: 4px; }
   .complexite-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; display: block; }
-
-  .complexite-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-  }
-
-  .complexite-btn {
-    display: flex; flex-direction: column;
-    gap: 5px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 14px 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: left;
-  }
-
+  .complexite-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .complexite-btn { display: flex; flex-direction: column; gap: 5px; background: var(--bg); border: 1px solid var(--border); border-radius: 3px; padding: 14px 12px; cursor: pointer; transition: all 0.2s; text-align: left; }
   .complexite-btn:hover { border-color: var(--muted); }
   .complexite-btn.active { border-color: var(--accent); background: rgba(232,55,42,0.05); }
-
   .cx-top { display: flex; align-items: baseline; justify-content: space-between; }
-
-  .cx-name {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text);
-  }
-
-  .cx-coef {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    transition: color 0.2s;
-  }
-
+  .cx-name { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--text); }
+  .cx-coef { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); transition: color 0.2s; }
   .complexite-btn.active .cx-coef { color: var(--accent); }
+  .cx-desc { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); line-height: 1.5; }
 
-  .cx-desc {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: var(--muted);
-    line-height: 1.5;
-  }
-
-  /* Résultat strat */
-  .strat-result {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-top: 16px; padding: 14px 18px;
-    background: var(--bg); border: 1px solid var(--border); border-radius: 3px;
-  }
-
+  .strat-result { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding: 14px 18px; background: var(--bg); border: 1px solid var(--border); border-radius: 3px; }
   .strat-result-info { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); line-height: 1.6; }
   .strat-result-info strong { color: var(--text); font-size: 11px; display: block; margin-bottom: 2px; }
-
   .strat-result-val { font-size: 22px; font-weight: 800; color: var(--accent); font-family: 'Syne', sans-serif; white-space: nowrap; }
   .strat-result-val span { font-size: 12px; font-weight: 400; color: var(--muted); font-family: 'DM Mono', monospace; margin-left: 4px; }
 
-  /* Forfait base input */
   .forfait-input-row { margin-bottom: 20px; }
-  .forfait-input-row input { font-size: 18px; font-weight: 700; color: var(--accent); }
 
   /* Influence */
   .influence-grid { display: flex; flex-direction: column; gap: 10px; }
-  .influence-row {
-    display: grid; grid-template-columns: 1fr 160px 36px; gap: 10px;
-    align-items: center; background: var(--bg); border: 1px solid var(--border);
-    border-radius: 3px; padding: 12px 14px; animation: fadeUp 0.2s ease both;
-  }
+  .influence-row { display: grid; grid-template-columns: 1fr 160px 36px; gap: 10px; align-items: center; background: var(--bg); border: 1px solid var(--border); border-radius: 3px; padding: 12px 14px; animation: fadeUp 0.2s ease both; }
   .inf-label { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 5px; }
   .influence-row input[type="text"] { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; padding: 4px 0; font-size: 13px; }
   .influence-row input[type="text"]:focus { box-shadow: none; border-bottom-color: var(--accent); outline: none; }
@@ -236,43 +279,23 @@
   .item-row input[type="text"] { font-size: 13px; padding: 8px 10px; }
   .item-row input[type="number"] { font-size: 13px; padding: 8px 10px; }
 
-  .section-subtotal {
-    display: flex; justify-content: flex-end; align-items: center; gap: 10px;
-    margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border);
-    font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted);
-  }
+  .section-subtotal { display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border); font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); }
   .section-subtotal strong { color: var(--text); font-size: 14px; }
 
-  .btn-add {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    margin-top: 14px; width: 100%; background: transparent; border: 1px dashed var(--border);
-    color: var(--muted); font-family: 'DM Mono', monospace; font-size: 10px;
-    letter-spacing: 0.15em; text-transform: uppercase; padding: 9px 16px;
-    border-radius: 3px; cursor: pointer; transition: all 0.2s;
-  }
+  .btn-add { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; width: 100%; background: transparent; border: 1px dashed var(--border); color: var(--muted); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; padding: 9px 16px; border-radius: 3px; cursor: pointer; transition: all 0.2s; }
   .btn-add:hover { border-color: var(--accent); color: var(--accent); }
 
-  .btn-del {
-    background: transparent; border: 1px solid var(--border); color: var(--muted);
-    font-size: 14px; width: 32px; height: 32px; border-radius: 3px; cursor: pointer;
-    transition: all 0.2s; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
+  .btn-del { background: transparent; border: 1px solid var(--border); color: var(--muted); font-size: 14px; width: 32px; height: 32px; border-radius: 3px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .btn-del:hover { border-color: var(--accent2); color: var(--accent2); }
 
-  /* Commission */
   .marge-control { display: flex; align-items: center; gap: 12px; }
   .marge-control input[type="number"] { width: 80px; flex-shrink: 0; }
   .marge-slider { flex: 1; -webkit-appearance: none; height: 2px; background: var(--border); border-radius: 2px; outline: none; border: none; padding: 0; }
   .marge-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); cursor: pointer; }
 
   /* Summary */
-  .summary {
-    background: var(--surface); border: 1px solid var(--accent); border-radius: 4px;
-    position: sticky; bottom: 16px; overflow: hidden;
-    transition: box-shadow 0.3s; animation: fadeUp 0.5s 0.3s ease both;
-  }
+  .summary { background: var(--surface); border: 1px solid var(--accent); border-radius: 4px; position: sticky; bottom: 16px; overflow: hidden; transition: box-shadow 0.3s; animation: fadeUp 0.5s 0.3s ease both; }
   .summary:hover { box-shadow: 0 0 32px rgba(232,55,42,0.12); }
-
   .summary-bar { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; cursor: pointer; user-select: none; }
   .summary-bar-left { display: flex; align-items: center; gap: 16px; }
   .summary-bar-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); }
@@ -281,24 +304,20 @@
   .summary-toggle { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
   .summary-toggle .arrow { display: inline-block; transition: transform 0.3s ease; }
   .summary-bar:hover .summary-toggle { color: var(--accent); }
-
   .summary-body { max-height: 0; overflow: hidden; border-top: 1px solid transparent; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), border-color 0.3s; }
   .summary-body.open { max-height: 700px; border-top-color: var(--border); }
   .summary-body-inner { padding: 24px; }
   .summary-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
-
   .line-items { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
   .line { display: flex; justify-content: space-between; align-items: center; font-family: 'DM Mono', monospace; font-size: 12px; }
   .line-name { color: var(--muted); }
   .line-val { color: var(--text); font-weight: 500; }
   .line.margin { border-top: 1px dashed var(--border); padding-top: 10px; margin-top: 4px; }
-
   .total-row { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid var(--accent); padding-top: 20px; margin-top: 4px; }
   .total-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
   .total-amount { font-size: 40px; font-weight: 800; color: var(--accent); letter-spacing: -0.03em; line-height: 1; }
   .total-amount .currency { font-size: 16px; font-weight: 600; vertical-align: super; margin-right: 4px; }
   .sub-total { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); text-align: right; margin-top: 4px; }
-
   .btn-reset { margin-top: 20px; width: 100%; background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; padding: 12px; border-radius: 3px; cursor: pointer; transition: all 0.2s; }
   .btn-reset:hover { border-color: var(--muted); color: var(--text); }
 
@@ -309,11 +328,30 @@
     header { flex-direction: column; gap: 12px; }
     .total-amount { font-size: 32px; }
     .influence-row { grid-template-columns: 1fr 120px 36px; }
-    .mode-toggle { flex-direction: column; }
+    .login-box { padding: 36px 24px; }
   }
 </style>
 </head>
 <body>
+
+<!-- ── LOGIN SCREEN ────────────────────────────────────── -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <strong>Déclic</strong>
+      <span>Outil Interne — Accès restreint</span>
+    </div>
+    <div class="login-field">
+      <label>Mot de passe</label>
+      <input type="password" id="pwd-input" placeholder="••••••••••••" onkeydown="if(event.key==='Enter') tryLogin()">
+    </div>
+    <button class="login-btn" onclick="tryLogin()">Accéder à l'outil</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- ── APP ─────────────────────────────────────────────── -->
+<div id="app">
 <div class="container">
 
   <header>
@@ -322,7 +360,7 @@
       Calculateur de Devis
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-      <div class="badge">Outil Interne — v1.6</div>
+      <div class="badge">Outil Interne — v1.7</div>
       <button onclick="resetAll()" style="background:transparent;border:1px solid #3a1a1a;color:#e8372a;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;padding:5px 12px;border-radius:2px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(232,55,42,0.08)'" onmouseout="this.style.background='transparent'">↺ Réinitialiser</button>
     </div>
   </header>
@@ -344,8 +382,6 @@
       </div>
     </div>
     <div class="section-body">
-
-      <!-- MODE A — Taux horaire -->
       <div class="mode-panel active" id="panel-a">
         <div class="grade-grid">
           <div class="grade-card">
@@ -390,7 +426,6 @@
         </div>
       </div>
 
-      <!-- MODE B — Forfait concept -->
       <div class="mode-panel" id="panel-b">
         <div class="forfait-input-row">
           <div class="field">
@@ -401,35 +436,24 @@
         </div>
       </div>
 
-      <!-- COMPLEXITÉ — commune aux deux modes -->
       <div class="complexite-section">
         <span class="complexite-label">Complexité estimée du concept</span>
         <div class="complexite-grid">
           <button class="complexite-btn active" id="cx-simple" onclick="selectComplexite('simple')">
-            <div class="cx-top">
-              <span class="cx-name">Standard</span>
-              <span class="cx-coef">×1.0</span>
-            </div>
+            <div class="cx-top"><span class="cx-name">Standard</span><span class="cx-coef">×1.0</span></div>
             <span class="cx-desc">Prestation habituelle, client cadré, brief clair</span>
           </button>
           <button class="complexite-btn" id="cx-moyen" onclick="selectComplexite('moyen')">
-            <div class="cx-top">
-              <span class="cx-name">Maîtrisé</span>
-              <span class="cx-coef">×1.3</span>
-            </div>
+            <div class="cx-top"><span class="cx-name">Maîtrisé</span><span class="cx-coef">×1.3</span></div>
             <span class="cx-desc">Retours possibles mais bornés, quelques décideurs</span>
           </button>
           <button class="complexite-btn" id="cx-complexe" onclick="selectComplexite('complexe')">
-            <div class="cx-top">
-              <span class="cx-name">Complexe</span>
-              <span class="cx-coef">×1.6</span>
-            </div>
+            <div class="cx-top"><span class="cx-name">Complexe</span><span class="cx-coef">×1.6</span></div>
             <span class="cx-desc">Tu sais qu'ils vont te débriefer au maximum</span>
           </button>
         </div>
       </div>
 
-      <!-- RÉSULTAT STRAT -->
       <div class="strat-result">
         <div class="strat-result-info">
           <strong id="strat-result-label">Stratégie & Conseil — Taux horaire</strong>
@@ -437,7 +461,6 @@
         </div>
         <div class="strat-result-val" id="strat-result-val">0 <span>dhs</span></div>
       </div>
-
     </div>
   </div>
 
@@ -466,15 +489,7 @@
     </div>
     <div class="section-body">
       <table class="items-table">
-        <thead>
-          <tr>
-            <th>Item / Prestation</th>
-            <th class="num">Qté</th>
-            <th class="prix">Prix unitaire</th>
-            <th class="total">Total</th>
-            <th class="del"></th>
-          </tr>
-        </thead>
+        <thead><tr><th>Item / Prestation</th><th class="num">Qté</th><th class="prix">Prix unitaire</th><th class="total">Total</th><th class="del"></th></tr></thead>
         <tbody id="prod-list"></tbody>
       </table>
       <button class="btn-add" onclick="addProdItem()">+ Ajouter un item</button>
@@ -492,15 +507,7 @@
     </div>
     <div class="section-body">
       <table class="items-table">
-        <thead>
-          <tr>
-            <th>Item / Prestation</th>
-            <th class="num">Qté</th>
-            <th class="prix">Prix unitaire</th>
-            <th class="total">Total</th>
-            <th class="del"></th>
-          </tr>
-        </thead>
+        <thead><tr><th>Item / Prestation</th><th class="num">Qté</th><th class="prix">Prix unitaire</th><th class="total">Total</th><th class="del"></th></tr></thead>
         <tbody id="av-list"></tbody>
       </table>
       <button class="btn-add" onclick="addAvItem()">+ Ajouter un item</button>
@@ -528,8 +535,8 @@
     </div>
   </div>
 
-  <!-- RÉSULTAT GLOBAL -->
-  <div class="summary" id="summary">
+  <!-- RÉSULTAT -->
+  <div class="summary">
     <div class="summary-bar" onclick="toggleSummary()">
       <div class="summary-bar-left">
         <span class="summary-bar-label">Total devis</span>
@@ -566,14 +573,32 @@
   </div>
 
 </div>
+</div>
 
 <script>
+  // ── MOT DE PASSE ───────────────────────────────────────
+  // Pour changer le mot de passe : modifier la valeur ci-dessous
+  const PASSWORD = 'DECLIC1496';
+
+  function tryLogin() {
+    const val = document.getElementById('pwd-input').value;
+    const err = document.getElementById('login-error');
+    if (val === PASSWORD) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app').classList.add('visible');
+    } else {
+      err.textContent = 'Mot de passe incorrect';
+      document.getElementById('pwd-input').value = '';
+      document.getElementById('pwd-input').focus();
+      setTimeout(() => err.textContent = '', 3000);
+    }
+  }
+
+  // ── OUTIL ──────────────────────────────────────────────
   function n(id) { return parseFloat(document.getElementById(id).value) || 0; }
   function fmt(v) { return Math.round(v).toLocaleString('fr-FR'); }
 
-  // ── MODE ───────────────────────────────────────────────
   let currentMode = 'a';
-
   function setMode(m) {
     currentMode = m;
     ['a','b'].forEach(x => {
@@ -583,7 +608,6 @@
     calc();
   }
 
-  // ── COMPLEXITÉ ─────────────────────────────────────────
   let complexite = 'simple';
   const coefs = { simple: 1.0, moyen: 1.3, complexe: 1.6 };
   const cxLabels = { simple: 'Standard ×1.0', moyen: 'Maîtrisé ×1.3', complexe: 'Complexe ×1.6' };
@@ -596,7 +620,6 @@
     calc();
   }
 
-  // ── CALCUL STRAT ───────────────────────────────────────
   function getConseilValue() {
     const coef = coefs[complexite];
     if (currentMode === 'a') {
@@ -608,10 +631,8 @@
   }
 
   function updateStratResult(conseil) {
-    const coef = coefs[complexite];
     const modeLabel = currentMode === 'a' ? 'Taux horaire' : 'Forfait concept';
     document.getElementById('strat-result-label').textContent = `Stratégie & Conseil — ${modeLabel}`;
-
     let detail = '';
     if (currentMode === 'a') {
       const base = 850*(n('g1_concept')+n('g1_pilotage')) + 450*(n('g2_concept')+n('g2_pilotage')) + 250*(n('g3_concept')+n('g3_pilotage'));
@@ -619,34 +640,24 @@
     } else {
       detail = `Base ${fmt(n('forfait_base'))} dhs · ${cxLabels[complexite]}`;
     }
-
     document.getElementById('strat-result-detail').textContent = detail || '—';
     document.getElementById('strat-result-val').innerHTML = fmt(conseil) + ' <span>dhs</span>';
     document.getElementById('r_conseil_label').textContent = `Stratégie & Conseil (${cxLabels[complexite]})`;
   }
 
-  // ── INFLUENCE ──────────────────────────────────────────
   let infId = 0;
   function addInfluenceur() {
     const id = ++infId;
     const div = document.createElement('div');
-    div.className = 'influence-row';
-    div.id = 'inf_' + id;
+    div.className = 'influence-row'; div.id = 'inf_' + id;
     div.innerHTML = `
-      <div>
-        <div class="inf-label">Nom / Handle</div>
-        <input type="text" placeholder="ex : @nom_influenceur">
-      </div>
-      <div>
-        <div class="inf-label">Forfait global (dhs)</div>
-        <input type="number" min="0" step="100" placeholder="0" oninput="calc()">
-      </div>
+      <div><div class="inf-label">Nom / Handle</div><input type="text" placeholder="ex : @nom_influenceur"></div>
+      <div><div class="inf-label">Forfait global (dhs)</div><input type="number" min="0" step="100" placeholder="0" oninput="calc()"></div>
       <button class="btn-del" onclick="removeRow('inf_${id}')">×</button>
     `;
     document.getElementById('influence-list').appendChild(div);
   }
 
-  // ── PROD ───────────────────────────────────────────────
   let prodId = 0;
   function addProdItem() {
     const id = 'prod_' + (++prodId);
@@ -662,7 +673,6 @@
     document.getElementById('prod-list').appendChild(tr);
   }
 
-  // ── AV ─────────────────────────────────────────────────
   let avId = 0;
   function addAvItem() {
     const id = 'av_' + (++avId);
@@ -682,9 +692,7 @@
     const row = document.getElementById(id);
     if (!row) return;
     const inputs = row.querySelectorAll('input[type="number"]');
-    const qty = parseFloat(inputs[0].value) || 0;
-    const prix = parseFloat(inputs[1].value) || 0;
-    document.getElementById('t_' + id).textContent = fmt(qty * prix) + ' dhs';
+    document.getElementById('t_' + id).textContent = fmt((parseFloat(inputs[0].value)||0) * (parseFloat(inputs[1].value)||0)) + ' dhs';
     calc();
   }
 
@@ -693,7 +701,6 @@
     if (el) { el.remove(); calc(); }
   }
 
-  // ── CALCUL GLOBAL ──────────────────────────────────────
   function calc() {
     const conseil = getConseilValue();
     updateStratResult(conseil);
@@ -705,25 +712,23 @@
 
     let prod = 0;
     document.querySelectorAll('#prod-list .item-row').forEach(row => {
-      const inputs = row.querySelectorAll('input[type="number"]');
-      prod += (parseFloat(inputs[0]?.value)||0) * (parseFloat(inputs[1]?.value)||0);
+      const i = row.querySelectorAll('input[type="number"]');
+      prod += (parseFloat(i[0]?.value)||0) * (parseFloat(i[1]?.value)||0);
     });
 
     let av = 0;
     document.querySelectorAll('#av-list .item-row').forEach(row => {
-      const inputs = row.querySelectorAll('input[type="number"]');
-      av += (parseFloat(inputs[0]?.value)||0) * (parseFloat(inputs[1]?.value)||0);
+      const i = row.querySelectorAll('input[type="number"]');
+      av += (parseFloat(i[0]?.value)||0) * (parseFloat(i[1]?.value)||0);
     });
 
     const subtotal = conseil + influence + prod + av;
-    const commPct = n('marge') / 100;
-    const commission = subtotal * commPct;
+    const commission = subtotal * (n('marge') / 100);
     const total = subtotal + commission;
 
     document.getElementById('st_influence').textContent = fmt(influence) + ' dhs';
     document.getElementById('st_prod').textContent = fmt(prod) + ' dhs';
     document.getElementById('st_av').textContent = fmt(av) + ' dhs';
-
     document.getElementById('r_conseil').textContent = fmt(conseil) + ' dhs';
     document.getElementById('r_influence').textContent = fmt(influence) + ' dhs';
     document.getElementById('r_prod').textContent = fmt(prod) + ' dhs';
@@ -761,7 +766,6 @@
     document.getElementById('toggle-label').textContent = summaryOpen ? 'Masquer' : 'Voir le détail';
   }
 
-  // Init
   addInfluenceur(); addProdItem(); addAvItem();
   calc();
 </script>
