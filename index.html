@@ -7,334 +7,248 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0c0a0a;
-    --surface: #131212;
-    --border: #2a1f1f;
-    --accent: #e8372a;
-    --accent2: #ff6b5b;
-    --text: #e8e8e8;
-    --muted: #7a7a7a;
-    --card: #171414;
+    --bg: #0c0a0a; --surface: #131212; --border: #2a1f1f;
+    --accent: #e8372a; --accent2: #ff6b5b;
+    --text: #e8e8e8; --muted: #7a7a7a; --card: #171414;
   }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Syne', sans-serif;
-    min-height: 100vh;
-  }
-
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'Syne',sans-serif; min-height:100vh; }
   body::before {
-    content: '';
-    position: fixed;
-    top: -200px; left: -200px;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(232,55,42,0.07) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
+    content:''; position:fixed; top:-200px; left:-200px;
+    width:600px; height:600px;
+    background:radial-gradient(circle,rgba(232,55,42,0.07) 0%,transparent 70%);
+    pointer-events:none; z-index:0;
   }
 
-  /* ── LOGIN ─────────────────────────────────────────── */
-  #login-screen {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    background: var(--bg);
-  }
+  /* LOGIN */
+  #login-screen { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:100; background:var(--bg); }
+  .login-box { background:var(--card); border:1px solid var(--border); border-radius:6px; padding:48px 40px; width:100%; max-width:360px; display:flex; flex-direction:column; gap:24px; animation:fadeUp 0.4s ease both; position:relative; z-index:1; }
+  .login-logo { text-align:center; }
+  .login-logo strong { display:block; font-family:'Syne',sans-serif; font-size:28px; font-weight:800; color:var(--accent); letter-spacing:-0.02em; }
+  .login-logo span { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.3em; text-transform:uppercase; color:var(--muted); }
+  .login-field { display:flex; flex-direction:column; gap:8px; }
+  .login-field label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); }
+  .login-field input { background:var(--bg); border:1px solid var(--border); color:var(--text); font-family:'DM Mono',monospace; font-size:15px; padding:12px 16px; border-radius:3px; width:100%; letter-spacing:0.1em; transition:border-color 0.2s,box-shadow 0.2s; }
+  .login-field input:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 2px rgba(232,55,42,0.15); }
+  .login-btn { background:var(--accent); border:none; color:#fff; font-family:'Syne',sans-serif; font-size:14px; font-weight:700; padding:13px; border-radius:3px; cursor:pointer; letter-spacing:0.05em; transition:opacity 0.2s,transform 0.1s; }
+  .login-btn:hover { opacity:0.88; }
+  .login-btn:active { transform:scale(0.99); }
+  .login-error { font-family:'DM Mono',monospace; font-size:10px; color:var(--accent2); text-align:center; letter-spacing:0.1em; min-height:16px; animation:shake 0.3s ease; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
 
-  .login-box {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 48px 40px;
-    width: 100%;
-    max-width: 360px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    animation: fadeUp 0.4s ease both;
-    position: relative;
-    z-index: 1;
-  }
+  /* APP */
+  #app { display:none; padding:40px 20px 120px; }
+  #app.visible { display:block; animation:fadeUp 0.4s ease both; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
 
-  .login-logo {
-    text-align: center;
-  }
+  .container { max-width:900px; margin:0 auto; position:relative; z-index:1; }
 
-  .login-logo strong {
-    display: block;
-    font-family: 'Syne', sans-serif;
-    font-size: 28px;
-    font-weight: 800;
-    color: var(--accent);
-    letter-spacing: -0.02em;
-  }
+  header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:52px; padding-bottom:32px; border-bottom:1px solid var(--border); }
+  .logo { font-size:11px; font-family:'DM Mono',monospace; letter-spacing:0.3em; color:var(--muted); text-transform:uppercase; }
+  .logo strong { display:block; font-family:'Syne',sans-serif; font-size:22px; font-weight:800; color:var(--accent); letter-spacing:-0.02em; margin-bottom:2px; }
+  .badge { font-family:'DM Mono',monospace; font-size:10px; background:var(--border); color:var(--muted); padding:4px 10px; border-radius:2px; letter-spacing:0.15em; text-transform:uppercase; margin-top:6px; }
 
-  .login-logo span {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
+  .section { margin-bottom:32px; background:var(--card); border:1px solid var(--border); border-radius:4px; overflow:hidden; animation:fadeUp 0.4s ease both; }
+  .section:nth-child(2){animation-delay:0.05s} .section:nth-child(3){animation-delay:0.1s}
+  .section:nth-child(4){animation-delay:0.15s} .section:nth-child(5){animation-delay:0.2s}
 
-  .login-field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+  .section-header { display:flex; align-items:center; justify-content:space-between; padding:18px 24px; background:var(--surface); border-bottom:1px solid var(--border); }
+  .section-header-left { display:flex; align-items:center; gap:12px; }
+  .section-tag { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.25em; text-transform:uppercase; color:var(--bg); background:var(--accent); padding:3px 8px; border-radius:2px; font-weight:500; }
+  .section-tag.pink{background:var(--accent2)} .section-tag.blue{background:#4ab8f0} .section-tag.orange{background:#f0a04a}
+  .section-title { font-size:14px; font-weight:700; letter-spacing:0.05em; color:var(--text); }
+  .section-body { padding:24px; }
 
-  .login-field label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .login-field input {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 15px;
-    padding: 12px 16px;
-    border-radius: 3px;
-    width: 100%;
-    letter-spacing: 0.1em;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-
-  .login-field input:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(232,55,42,0.15);
-  }
-
-  .login-btn {
-    background: var(--accent);
-    border: none;
-    color: #fff;
-    font-family: 'Syne', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    padding: 13px;
-    border-radius: 3px;
-    cursor: pointer;
-    letter-spacing: 0.05em;
-    transition: opacity 0.2s, transform 0.1s;
-  }
-
-  .login-btn:hover { opacity: 0.88; }
-  .login-btn:active { transform: scale(0.99); }
-
-  .login-error {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--accent2);
-    text-align: center;
-    letter-spacing: 0.1em;
-    min-height: 16px;
-    animation: shake 0.3s ease;
-  }
-
-  @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-6px); }
-    75% { transform: translateX(6px); }
-  }
-
-  /* ── APP ───────────────────────────────────────────── */
-  #app {
-    display: none;
-    padding: 40px 20px 120px;
-  }
-
-  #app.visible { display: block; animation: fadeUp 0.4s ease both; }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .container { max-width: 880px; margin: 0 auto; position: relative; z-index: 1; }
-
-  header {
-    display: flex; align-items: flex-start; justify-content: space-between;
-    margin-bottom: 52px; padding-bottom: 32px; border-bottom: 1px solid var(--border);
-  }
-
-  .logo { font-size: 11px; font-family: 'DM Mono', monospace; letter-spacing: 0.3em; color: var(--muted); text-transform: uppercase; }
-  .logo strong { display: block; font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; margin-bottom: 2px; }
-  .badge { font-family: 'DM Mono', monospace; font-size: 10px; background: var(--border); color: var(--muted); padding: 4px 10px; border-radius: 2px; letter-spacing: 0.15em; text-transform: uppercase; margin-top: 6px; }
-
-  .section { margin-bottom: 32px; background: var(--card); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; animation: fadeUp 0.4s ease both; }
-  .section:nth-child(2) { animation-delay: 0.05s; }
-  .section:nth-child(3) { animation-delay: 0.1s; }
-  .section:nth-child(4) { animation-delay: 0.15s; }
-  .section:nth-child(5) { animation-delay: 0.2s; }
-
-  .section-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; background: var(--surface); border-bottom: 1px solid var(--border); }
-  .section-header-left { display: flex; align-items: center; gap: 12px; }
-  .section-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--bg); background: var(--accent); padding: 3px 8px; border-radius: 2px; font-weight: 500; }
-  .section-tag.pink { background: var(--accent2); }
-  .section-tag.blue { background: #4ab8f0; }
-  .section-tag.orange { background: #f0a04a; }
-  .section-title { font-size: 14px; font-weight: 700; letter-spacing: 0.05em; color: var(--text); }
-  .section-body { padding: 24px; }
-
-  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-  .row.three { grid-template-columns: 1fr 1fr 1fr; }
-  .field { display: flex; flex-direction: column; gap: 6px; }
-
-  label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+  label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); }
+  .field { display:flex; flex-direction:column; gap:6px; }
+  .hint { font-family:'DM Mono',monospace; font-size:9px; color:var(--muted); margin-top:2px; line-height:1.5; }
 
   input[type="number"], input[type="text"] {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 14px;
-    padding: 10px 14px;
-    border-radius: 3px;
-    width: 100%;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    -moz-appearance: textfield;
+    background:var(--bg); border:1px solid var(--border); color:var(--text);
+    font-family:'DM Mono',monospace; font-size:14px; padding:10px 14px;
+    border-radius:3px; width:100%; transition:border-color 0.2s,box-shadow 0.2s;
+    -moz-appearance:textfield;
   }
+  input[type="number"]:focus, input[type="text"]:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 2px rgba(232,55,42,0.15); }
+  input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance:none; }
 
-  input[type="number"]:focus, input[type="text"]:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(232,55,42,0.15);
+  select {
+    background:var(--bg); border:1px solid var(--border); color:var(--text);
+    font-family:'DM Mono',monospace; font-size:12px; padding:8px 10px;
+    border-radius:3px; width:100%; cursor:pointer;
+    transition:border-color 0.2s; -webkit-appearance:none; appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237a7a7a'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 10px center;
   }
+  select:focus { outline:none; border-color:var(--accent); }
+  select option { background:var(--surface); color:var(--text); }
 
-  input[type="number"]::-webkit-outer-spin-button,
-  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+  /* MODE TOGGLE */
+  .mode-toggle { display:flex; background:var(--bg); border:1px solid var(--border); border-radius:3px; overflow:hidden; }
+  .mode-toggle-btn { flex:1; background:transparent; border:none; color:var(--muted); font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; padding:8px 12px; cursor:pointer; transition:all 0.2s; border-right:1px solid var(--border); }
+  .mode-toggle-btn:last-child { border-right:none; }
+  .mode-toggle-btn.active { background:rgba(232,55,42,0.1); color:var(--accent); }
+  .mode-toggle-btn:hover:not(.active) { color:var(--text); }
+  .mode-panel { display:none; }
+  .mode-panel.active { display:block; animation:fadeUp 0.2s ease both; }
 
-  .hint { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); margin-top: 2px; line-height: 1.5; }
+  /* GRADE COLUMNS */
+  .grade-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px; }
+  .grade-card { background:var(--bg); border:1px solid var(--border); border-radius:3px; padding:16px; display:flex; flex-direction:column; gap:0; }
+  .grade-card-header { margin-bottom:12px; }
+  .grade-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+  .grade-rate { font-size:18px; font-weight:800; color:var(--accent); }
+  .grade-rate span { font-size:11px; font-weight:400; color:var(--muted); font-family:'DM Mono',monospace; }
+  .grade-divider { height:1px; background:var(--border); margin:0 0 14px; }
 
-  /* Mode toggle */
-  .mode-toggle { display: flex; background: var(--bg); border: 1px solid var(--border); border-radius: 3px; overflow: hidden; }
-  .mode-toggle-btn { flex: 1; background: transparent; border: none; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; padding: 8px 12px; cursor: pointer; transition: all 0.2s; border-right: 1px solid var(--border); }
-  .mode-toggle-btn:last-child { border-right: none; }
-  .mode-toggle-btn.active { background: rgba(232,55,42,0.1); color: var(--accent); }
-  .mode-toggle-btn:hover:not(.active) { color: var(--text); }
+  /* POSTE ROWS inside grade */
+  .poste-list { display:flex; flex-direction:column; gap:8px; }
+  .poste-row { display:grid; grid-template-columns:1fr 56px 28px; gap:6px; align-items:center; animation:fadeUp 0.2s ease both; }
+  .poste-row select { font-size:11px; padding:7px 28px 7px 8px; }
+  .poste-row input[type="number"] { font-size:12px; padding:7px 8px; text-align:center; }
 
-  .mode-panel { display: none; }
-  .mode-panel.active { display: block; animation: fadeUp 0.2s ease both; }
+  .btn-add-poste { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:10px; width:100%; background:transparent; border:1px dashed var(--border); color:var(--muted); font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; padding:7px; border-radius:3px; cursor:pointer; transition:all 0.2s; }
+  .btn-add-poste:hover { border-color:var(--accent); color:var(--accent); }
 
-  /* Grades */
-  .grade-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
-  .grade-card { background: var(--bg); border: 1px solid var(--border); border-radius: 3px; padding: 16px; }
-  .grade-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-  .grade-rate { font-size: 18px; font-weight: 800; color: var(--accent); margin-bottom: 12px; }
-  .grade-rate span { font-size: 11px; font-weight: 400; color: var(--muted); font-family: 'DM Mono', monospace; }
-  .divider { height: 1px; background: var(--border); margin: 4px 0 16px; }
+  .btn-del { background:transparent; border:1px solid var(--border); color:var(--muted); font-size:12px; width:26px; height:26px; border-radius:3px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .btn-del:hover { border-color:var(--accent2); color:var(--accent2); }
 
-  /* Complexité */
-  .complexite-section { margin-top: 4px; }
-  .complexite-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; display: block; }
-  .complexite-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-  .complexite-btn { display: flex; flex-direction: column; gap: 5px; background: var(--bg); border: 1px solid var(--border); border-radius: 3px; padding: 14px 12px; cursor: pointer; transition: all 0.2s; text-align: left; }
-  .complexite-btn:hover { border-color: var(--muted); }
-  .complexite-btn.active { border-color: var(--accent); background: rgba(232,55,42,0.05); }
-  .cx-top { display: flex; align-items: baseline; justify-content: space-between; }
-  .cx-name { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--text); }
-  .cx-coef { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); transition: color 0.2s; }
-  .complexite-btn.active .cx-coef { color: var(--accent); }
-  .cx-desc { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); line-height: 1.5; }
+  /* GRADE SUBTOTAL */
+  .grade-subtotal { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); text-align:right; margin-top:10px; padding-top:10px; border-top:1px dashed var(--border); }
+  .grade-subtotal strong { color:var(--accent); }
 
-  .strat-result { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding: 14px 18px; background: var(--bg); border: 1px solid var(--border); border-radius: 3px; }
-  .strat-result-info { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); line-height: 1.6; }
-  .strat-result-info strong { color: var(--text); font-size: 11px; display: block; margin-bottom: 2px; }
-  .strat-result-val { font-size: 22px; font-weight: 800; color: var(--accent); font-family: 'Syne', sans-serif; white-space: nowrap; }
-  .strat-result-val span { font-size: 12px; font-weight: 400; color: var(--muted); font-family: 'DM Mono', monospace; margin-left: 4px; }
+  /* FORFAIT */
+  .forfait-input-row { margin-bottom:20px; }
 
-  .forfait-input-row { margin-bottom: 20px; }
+  /* COMPLEXITÉ */
+  .complexite-section { margin-top:4px; }
+  .complexite-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:10px; display:block; }
+  .complexite-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
+  .complexite-btn { display:flex; flex-direction:column; gap:5px; background:var(--bg); border:1px solid var(--border); border-radius:3px; padding:14px 12px; cursor:pointer; transition:all 0.2s; text-align:left; }
+  .complexite-btn:hover { border-color:var(--muted); }
+  .complexite-btn.active { border-color:var(--accent); background:rgba(232,55,42,0.05); }
+  .cx-top { display:flex; align-items:baseline; justify-content:space-between; }
+  .cx-name { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; color:var(--text); }
+  .cx-coef { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); transition:color 0.2s; }
+  .complexite-btn.active .cx-coef { color:var(--accent); }
+  .cx-desc { font-family:'DM Mono',monospace; font-size:9px; color:var(--muted); line-height:1.5; }
 
-  /* Influence */
-  .influence-grid { display: flex; flex-direction: column; gap: 10px; }
-  .influence-row { display: grid; grid-template-columns: 1fr 160px 36px; gap: 10px; align-items: center; background: var(--bg); border: 1px solid var(--border); border-radius: 3px; padding: 12px 14px; animation: fadeUp 0.2s ease both; }
-  .inf-label { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 5px; }
-  .influence-row input[type="text"] { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; padding: 4px 0; font-size: 13px; }
-  .influence-row input[type="text"]:focus { box-shadow: none; border-bottom-color: var(--accent); outline: none; }
-  .influence-row input[type="number"] { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; padding: 4px 0; font-size: 16px; font-weight: 700; color: var(--accent); -moz-appearance: textfield; }
-  .influence-row input[type="number"]:focus { box-shadow: none; border-bottom-color: var(--accent); outline: none; }
+  .strat-result { display:flex; justify-content:space-between; align-items:center; margin-top:16px; padding:14px 18px; background:var(--bg); border:1px solid var(--border); border-radius:3px; }
+  .strat-result-info { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); line-height:1.6; }
+  .strat-result-info strong { color:var(--text); font-size:11px; display:block; margin-bottom:2px; }
+  .strat-result-val { font-size:22px; font-weight:800; color:var(--accent); font-family:'Syne',sans-serif; white-space:nowrap; }
+  .strat-result-val span { font-size:12px; font-weight:400; color:var(--muted); font-family:'DM Mono',monospace; margin-left:4px; }
 
-  /* Items table */
-  .items-table { width: 100%; border-collapse: collapse; }
-  .items-table thead tr { border-bottom: 1px solid var(--border); }
-  .items-table th { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); padding: 0 8px 10px; text-align: left; font-weight: 400; }
-  .items-table th.num { width: 80px; }
-  .items-table th.prix { width: 130px; }
-  .items-table th.total { width: 110px; text-align: right; }
-  .items-table th.del { width: 36px; }
-  .item-row td { padding: 6px 8px; vertical-align: middle; }
-  .item-row td.total-cell { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--text); text-align: right; white-space: nowrap; }
-  .item-row input[type="text"] { font-size: 13px; padding: 8px 10px; }
-  .item-row input[type="number"] { font-size: 13px; padding: 8px 10px; }
+  /* INFLUENCE */
+  .influence-grid { display:flex; flex-direction:column; gap:10px; }
+  .influence-row { display:grid; grid-template-columns:1fr 140px 28px; gap:10px; align-items:center; background:var(--bg); border:1px solid var(--border); border-radius:3px; padding:12px 14px; animation:fadeUp 0.2s ease both; }
+  .inf-label { font-family:'DM Mono',monospace; font-size:9px; color:var(--muted); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:5px; }
+  .influence-row input[type="text"] { background:transparent; border:none; border-bottom:1px solid var(--border); border-radius:0; padding:4px 0; font-size:13px; }
+  .influence-row input[type="text"]:focus { box-shadow:none; border-bottom-color:var(--accent); outline:none; }
+  .influence-row input[type="number"] { background:transparent; border:none; border-bottom:1px solid var(--border); border-radius:0; padding:4px 0; font-size:15px; font-weight:700; color:var(--accent); -moz-appearance:textfield; }
+  .influence-row input[type="number"]:focus { box-shadow:none; border-bottom-color:var(--accent); outline:none; }
 
-  .section-subtotal { display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border); font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); }
-  .section-subtotal strong { color: var(--text); font-size: 14px; }
+  /* COMMISSION INFLUENCE */
+  .inf-commission-block {
+    margin-top:20px; border:1px solid var(--border); border-radius:3px; overflow:hidden;
+  }
+  .inf-commission-toggle {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 16px; background:var(--surface); cursor:pointer; user-select:none;
+    transition:background 0.2s;
+  }
+  .inf-commission-toggle:hover { background:rgba(232,55,42,0.04); }
+  .inf-commission-toggle-left { display:flex; align-items:center; gap:10px; }
+  .inf-commission-checkbox {
+    width:16px; height:16px; border:1px solid var(--border); border-radius:2px;
+    background:var(--bg); display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; transition:all 0.2s; font-size:10px; color:transparent;
+  }
+  .inf-commission-checkbox.checked { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .inf-commission-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); }
+  .inf-commission-amount { font-family:'DM Mono',monospace; font-size:11px; color:var(--accent); font-weight:500; }
 
-  .btn-add { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; width: 100%; background: transparent; border: 1px dashed var(--border); color: var(--muted); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; padding: 9px 16px; border-radius: 3px; cursor: pointer; transition: all 0.2s; }
-  .btn-add:hover { border-color: var(--accent); color: var(--accent); }
+  .inf-commission-body { display:none; padding:16px; border-top:1px solid var(--border); }
+  .inf-commission-body.open { display:block; animation:fadeUp 0.2s ease both; }
 
-  .btn-del { background: transparent; border: 1px solid var(--border); color: var(--muted); font-size: 14px; width: 32px; height: 32px; border-radius: 3px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .btn-del:hover { border-color: var(--accent2); color: var(--accent2); }
+  .inf-taux-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .inf-taux-btn {
+    display:flex; flex-direction:column; gap:6px;
+    background:var(--bg); border:1px solid var(--border); border-radius:3px;
+    padding:14px 12px; cursor:pointer; transition:all 0.2s; text-align:left;
+  }
+  .inf-taux-btn:hover { border-color:var(--muted); }
+  .inf-taux-btn.active { border-color:var(--accent); background:rgba(232,55,42,0.05); }
+  .inf-taux-pct { font-family:'Syne',sans-serif; font-size:20px; font-weight:800; color:var(--text); line-height:1; transition:color 0.2s; }
+  .inf-taux-btn.active .inf-taux-pct { color:var(--accent); }
+  .inf-taux-title { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); }
+  .inf-taux-desc { font-family:'DM Mono',monospace; font-size:9px; color:var(--muted); line-height:1.5; margin-top:2px; }
 
-  .marge-control { display: flex; align-items: center; gap: 12px; }
-  .marge-control input[type="number"] { width: 80px; flex-shrink: 0; }
-  .marge-slider { flex: 1; -webkit-appearance: none; height: 2px; background: var(--border); border-radius: 2px; outline: none; border: none; padding: 0; }
-  .marge-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); cursor: pointer; }
+  /* ITEMS TABLE */
+  .items-table { width:100%; border-collapse:collapse; }
+  .items-table thead tr { border-bottom:1px solid var(--border); }
+  .items-table th { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); padding:0 8px 10px; text-align:left; font-weight:400; }
+  .items-table th.num{width:80px} .items-table th.prix{width:130px} .items-table th.total{width:110px;text-align:right} .items-table th.del{width:36px}
+  .item-row td { padding:6px 8px; vertical-align:middle; }
+  .item-row td.total-cell { font-family:'DM Mono',monospace; font-size:13px; font-weight:500; color:var(--text); text-align:right; white-space:nowrap; }
+  .item-row input[type="text"] { font-size:13px; padding:8px 10px; }
+  .item-row input[type="number"] { font-size:13px; padding:8px 10px; }
 
-  /* Summary */
-  .summary { background: var(--surface); border: 1px solid var(--accent); border-radius: 4px; position: sticky; bottom: 16px; overflow: hidden; transition: box-shadow 0.3s; animation: fadeUp 0.5s 0.3s ease both; }
-  .summary:hover { box-shadow: 0 0 32px rgba(232,55,42,0.12); }
-  .summary-bar { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; cursor: pointer; user-select: none; }
-  .summary-bar-left { display: flex; align-items: center; gap: 16px; }
-  .summary-bar-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); }
-  .summary-bar-total { font-size: 20px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; line-height: 1; }
-  .summary-bar-total .cur { font-size: 11px; font-weight: 500; margin-right: 3px; vertical-align: super; font-family: 'DM Mono', monospace; }
-  .summary-toggle { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
-  .summary-toggle .arrow { display: inline-block; transition: transform 0.3s ease; }
-  .summary-bar:hover .summary-toggle { color: var(--accent); }
-  .summary-body { max-height: 0; overflow: hidden; border-top: 1px solid transparent; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), border-color 0.3s; }
-  .summary-body.open { max-height: 700px; border-top-color: var(--border); }
-  .summary-body-inner { padding: 24px; }
-  .summary-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
-  .line-items { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-  .line { display: flex; justify-content: space-between; align-items: center; font-family: 'DM Mono', monospace; font-size: 12px; }
-  .line-name { color: var(--muted); }
-  .line-val { color: var(--text); font-weight: 500; }
-  .line.margin { border-top: 1px dashed var(--border); padding-top: 10px; margin-top: 4px; }
-  .total-row { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid var(--accent); padding-top: 20px; margin-top: 4px; }
-  .total-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
-  .total-amount { font-size: 40px; font-weight: 800; color: var(--accent); letter-spacing: -0.03em; line-height: 1; }
-  .total-amount .currency { font-size: 16px; font-weight: 600; vertical-align: super; margin-right: 4px; }
-  .sub-total { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); text-align: right; margin-top: 4px; }
-  .btn-reset { margin-top: 20px; width: 100%; background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; padding: 12px; border-radius: 3px; cursor: pointer; transition: all 0.2s; }
-  .btn-reset:hover { border-color: var(--muted); color: var(--text); }
+  .section-subtotal { display:flex; justify-content:flex-end; align-items:center; gap:10px; margin-top:14px; padding-top:14px; border-top:1px dashed var(--border); font-family:'DM Mono',monospace; font-size:12px; color:var(--muted); }
+  .section-subtotal strong { color:var(--text); font-size:14px; }
 
-  .info-banner { background: rgba(232,55,42,0.04); border: 1px solid rgba(232,55,42,0.15); border-radius: 3px; padding: 12px 16px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
+  .btn-add { display:flex; align-items:center; justify-content:center; gap:8px; margin-top:14px; width:100%; background:transparent; border:1px dashed var(--border); color:var(--muted); font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.15em; text-transform:uppercase; padding:9px 16px; border-radius:3px; cursor:pointer; transition:all 0.2s; }
+  .btn-add:hover { border-color:var(--accent); color:var(--accent); }
 
-  @media (max-width: 640px) {
-    .row, .row.three, .grade-grid, .complexite-grid { grid-template-columns: 1fr; }
-    header { flex-direction: column; gap: 12px; }
-    .total-amount { font-size: 32px; }
-    .influence-row { grid-template-columns: 1fr 120px 36px; }
-    .login-box { padding: 36px 24px; }
+  /* COMMISSION AGENCE */
+  .marge-control { display:flex; align-items:center; gap:12px; }
+  .marge-control input[type="number"] { width:80px; flex-shrink:0; }
+  .marge-slider { flex:1; -webkit-appearance:none; height:2px; background:var(--border); border-radius:2px; outline:none; border:none; padding:0; }
+  .marge-slider::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--accent); cursor:pointer; }
+
+  /* SUMMARY */
+  .summary { background:var(--surface); border:1px solid var(--accent); border-radius:4px; position:sticky; bottom:16px; overflow:hidden; transition:box-shadow 0.3s; animation:fadeUp 0.5s 0.3s ease both; }
+  .summary:hover { box-shadow:0 0 32px rgba(232,55,42,0.12); }
+  .summary-bar { display:flex; align-items:center; justify-content:space-between; padding:14px 24px; cursor:pointer; user-select:none; }
+  .summary-bar-left { display:flex; align-items:center; gap:16px; }
+  .summary-bar-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.25em; text-transform:uppercase; color:var(--muted); }
+  .summary-bar-total { font-size:20px; font-weight:800; color:var(--accent); letter-spacing:-0.02em; line-height:1; }
+  .summary-bar-total .cur { font-size:11px; font-weight:500; margin-right:3px; vertical-align:super; font-family:'DM Mono',monospace; }
+  .summary-toggle { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); display:flex; align-items:center; gap:6px; transition:color 0.2s; }
+  .summary-toggle .arrow { display:inline-block; transition:transform 0.3s ease; }
+  .summary-bar:hover .summary-toggle { color:var(--accent); }
+  .summary-body { max-height:0; overflow:hidden; border-top:1px solid transparent; transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1),border-color 0.3s; }
+  .summary-body.open { max-height:800px; border-top-color:var(--border); }
+  .summary-body-inner { padding:24px; }
+  .summary-title { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.3em; text-transform:uppercase; color:var(--muted); margin-bottom:20px; }
+  .line-items { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+  .line { display:flex; justify-content:space-between; align-items:center; font-family:'DM Mono',monospace; font-size:12px; }
+  .line-name { color:var(--muted); }
+  .line-val { color:var(--text); font-weight:500; }
+  .line.margin { border-top:1px dashed var(--border); padding-top:10px; margin-top:4px; }
+  .line.sub { padding-left:12px; opacity:0.75; }
+  .total-row { display:flex; justify-content:space-between; align-items:baseline; border-top:1px solid var(--accent); padding-top:20px; margin-top:4px; }
+  .total-label { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); }
+  .total-amount { font-size:40px; font-weight:800; color:var(--accent); letter-spacing:-0.03em; line-height:1; }
+  .total-amount .currency { font-size:16px; font-weight:600; vertical-align:super; margin-right:4px; }
+  .sub-total { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); text-align:right; margin-top:4px; }
+  .btn-reset { margin-top:20px; width:100%; background:transparent; border:1px solid var(--border); color:var(--muted); font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em; text-transform:uppercase; padding:12px; border-radius:3px; cursor:pointer; transition:all 0.2s; }
+  .btn-reset:hover { border-color:var(--muted); color:var(--text); }
+
+  .info-banner { background:rgba(232,55,42,0.04); border:1px solid rgba(232,55,42,0.15); border-radius:3px; padding:12px 16px; font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); line-height:1.6; margin-bottom:24px; }
+
+  @media(max-width:640px) {
+    .grade-grid, .complexite-grid, .inf-taux-grid { grid-template-columns:1fr; }
+    header { flex-direction:column; gap:12px; }
+    .total-amount { font-size:32px; }
+    .influence-row { grid-template-columns:1fr 120px 28px; }
+    .login-box { padding:36px 24px; }
   }
 </style>
 </head>
 <body>
 
-<!-- ── LOGIN SCREEN ────────────────────────────────────── -->
+<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-box">
     <div class="login-logo">
@@ -343,14 +257,15 @@
     </div>
     <div class="login-field">
       <label>Mot de passe</label>
-      <input type="password" id="pwd-input" placeholder="••••••••••••" onkeydown="if(event.key==='Enter') tryLogin()">
+      <input type="password" id="pwd-input" placeholder="••••••••••••" onkeydown="if(event.key==='Enter')tryLogin()">
     </div>
     <button class="login-btn" onclick="tryLogin()">Accéder à l'outil</button>
     <div class="login-error" id="login-error"></div>
+    <div style="text-align:center;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:#3a3a3a;">v1.8.1</div>
   </div>
 </div>
 
-<!-- ── APP ─────────────────────────────────────────────── -->
+<!-- APP -->
 <div id="app">
 <div class="container">
 
@@ -360,14 +275,12 @@
       Calculateur de Devis
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-      <div class="badge">Outil Interne — v1.7</div>
+      <div class="badge">Outil Interne — v1.8.1</div>
       <button onclick="resetAll()" style="background:transparent;border:1px solid #3a1a1a;color:#e8372a;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;padding:5px 12px;border-radius:2px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(232,55,42,0.08)'" onmouseout="this.style.background='transparent'">↺ Réinitialiser</button>
     </div>
   </header>
 
-  <div class="info-banner">
-    ⚡ Tous les champs sont optionnels. Remplis uniquement les postes concernés. Le total se calcule en temps réel.
-  </div>
+  <div class="info-banner">⚡ Tous les champs sont optionnels. Remplis uniquement les postes concernés. Le total se calcule en temps réel.</div>
 
   <!-- 01 STRATÉGIE -->
   <div class="section">
@@ -382,50 +295,51 @@
       </div>
     </div>
     <div class="section-body">
+
+      <!-- MODE A -->
       <div class="mode-panel active" id="panel-a">
         <div class="grade-grid">
+
+          <!-- G1 -->
           <div class="grade-card">
-            <div class="grade-label">Grade 1 — Associé</div>
-            <div class="grade-rate">850 <span>dhs/h</span></div>
-            <div class="divider"></div>
-            <div class="field">
-              <label>Réflexion Concept (h)</label>
-              <input type="number" id="g1_concept" min="0" step="0.5" placeholder="0" oninput="calc()">
+            <div class="grade-card-header">
+              <div class="grade-label">Grade 1 — Associé</div>
+              <div class="grade-rate">850 <span>dhs/h</span></div>
             </div>
-            <div class="field" style="margin-top:10px">
-              <label>Pilotage (h)</label>
-              <input type="number" id="g1_pilotage" min="0" step="0.5" placeholder="0" oninput="calc()">
-            </div>
+            <div class="grade-divider"></div>
+            <div class="poste-list" id="postes-g1"></div>
+            <button class="btn-add-poste" onclick="addPoste(1)">+ Ajouter un poste</button>
+            <div class="grade-subtotal">Sous-total G1 : <strong id="st-g1">0 dhs</strong></div>
           </div>
+
+          <!-- G2 -->
           <div class="grade-card">
-            <div class="grade-label">Grade 2 — Confirmé</div>
-            <div class="grade-rate">450 <span>dhs/h</span></div>
-            <div class="divider"></div>
-            <div class="field">
-              <label>Réflexion Concept (h)</label>
-              <input type="number" id="g2_concept" min="0" step="0.5" placeholder="0" oninput="calc()">
+            <div class="grade-card-header">
+              <div class="grade-label">Grade 2 — Confirmé</div>
+              <div class="grade-rate">450 <span>dhs/h</span></div>
             </div>
-            <div class="field" style="margin-top:10px">
-              <label>Pilotage (h)</label>
-              <input type="number" id="g2_pilotage" min="0" step="0.5" placeholder="0" oninput="calc()">
-            </div>
+            <div class="grade-divider"></div>
+            <div class="poste-list" id="postes-g2"></div>
+            <button class="btn-add-poste" onclick="addPoste(2)">+ Ajouter un poste</button>
+            <div class="grade-subtotal">Sous-total G2 : <strong id="st-g2">0 dhs</strong></div>
           </div>
+
+          <!-- G3 -->
           <div class="grade-card">
-            <div class="grade-label">Grade 3 — Junior</div>
-            <div class="grade-rate">250 <span>dhs/h</span></div>
-            <div class="divider"></div>
-            <div class="field">
-              <label>Réflexion Concept (h)</label>
-              <input type="number" id="g3_concept" min="0" step="0.5" placeholder="0" oninput="calc()">
+            <div class="grade-card-header">
+              <div class="grade-label">Grade 3 — Junior</div>
+              <div class="grade-rate">250 <span>dhs/h</span></div>
             </div>
-            <div class="field" style="margin-top:10px">
-              <label>Pilotage (h)</label>
-              <input type="number" id="g3_pilotage" min="0" step="0.5" placeholder="0" oninput="calc()">
-            </div>
+            <div class="grade-divider"></div>
+            <div class="poste-list" id="postes-g3"></div>
+            <button class="btn-add-poste" onclick="addPoste(3)">+ Ajouter un poste</button>
+            <div class="grade-subtotal">Sous-total G3 : <strong id="st-g3">0 dhs</strong></div>
           </div>
+
         </div>
       </div>
 
+      <!-- MODE B -->
       <div class="mode-panel" id="panel-b">
         <div class="forfait-input-row">
           <div class="field">
@@ -436,6 +350,7 @@
         </div>
       </div>
 
+      <!-- COMPLEXITÉ — commune -->
       <div class="complexite-section">
         <span class="complexite-label">Complexité estimée du concept</span>
         <div class="complexite-grid">
@@ -461,6 +376,7 @@
         </div>
         <div class="strat-result-val" id="strat-result-val">0 <span>dhs</span></div>
       </div>
+
     </div>
   </div>
 
@@ -473,9 +389,48 @@
       </div>
     </div>
     <div class="section-body">
+
       <div class="influence-grid" id="influence-list"></div>
       <button class="btn-add" onclick="addInfluenceur()">+ Ajouter un influenceur</button>
-      <div class="section-subtotal">Sous-total influence : <strong id="st_influence">0 dhs</strong></div>
+
+      <div class="section-subtotal" style="margin-bottom:4px;">
+        Cachet(s) influenceurs : <strong id="st_influence_cachets">0 dhs</strong>
+      </div>
+
+      <!-- Commission gestion influenceurs -->
+      <div class="inf-commission-block">
+        <div class="inf-commission-toggle" onclick="toggleInfCommission()">
+          <div class="inf-commission-toggle-left">
+            <div class="inf-commission-checkbox" id="inf-comm-check">✓</div>
+            <span class="inf-commission-label">Frais de gestion influenceurs</span>
+          </div>
+          <span class="inf-commission-amount" id="inf-comm-display">0 dhs</span>
+        </div>
+        <div class="inf-commission-body open" id="inf-comm-body">
+          <div class="inf-taux-grid">
+            <button class="inf-taux-btn" id="inf-t10" onclick="selectInfTaux(10)">
+              <span class="inf-taux-pct">10%</span>
+              <span class="inf-taux-title">Profil fourni</span>
+              <span class="inf-taux-desc">Influenceur identifié par le client, brief fourni, 1 seul profil à coordonner</span>
+            </button>
+            <button class="inf-taux-btn active" id="inf-t20" onclick="selectInfTaux(20)">
+              <span class="inf-taux-pct">20%</span>
+              <span class="inf-taux-title">Sourcing agence</span>
+              <span class="inf-taux-desc">Sourcing agence, brief à construire, 2 à 4 profils à gérer et briefer</span>
+            </button>
+            <button class="inf-taux-btn" id="inf-t30" onclick="selectInfTaux(30)">
+              <span class="inf-taux-pct">30%</span>
+              <span class="inf-taux-title">Casting complet</span>
+              <span class="inf-taux-desc">Casting, négociation, coordination multi-profils (5+) ou profils complexes</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-subtotal">
+        Sous-total influence : <strong id="st_influence">0 dhs</strong>
+      </div>
+
     </div>
   </div>
 
@@ -527,10 +482,10 @@
       <div class="field">
         <label>Taux de commission (%)</label>
         <div class="marge-control">
-          <input type="number" id="marge" min="0" max="100" step="1" value="20" oninput="syncSlider(); calc()">
-          <input type="range" class="marge-slider" id="marge_slider" min="0" max="60" step="1" value="20" oninput="syncInput(); calc()">
+          <input type="number" id="marge" min="0" max="100" step="1" value="20" oninput="syncSlider();calc()">
+          <input type="range" class="marge-slider" id="marge_slider" min="0" max="60" step="1" value="20" oninput="syncInput();calc()">
         </div>
-        <span class="hint">S'applique sur le total tous postes confondus</span>
+        <span class="hint">S'applique sur le total tous postes confondus (hors frais de gestion influenceurs)</span>
       </div>
     </div>
   </div>
@@ -552,7 +507,8 @@
         <div class="summary-title">— Récapitulatif Devis</div>
         <div class="line-items">
           <div class="line"><span class="line-name" id="r_conseil_label">Stratégie & Conseil</span><span class="line-val" id="r_conseil">0 dhs</span></div>
-          <div class="line"><span class="line-name">Influence</span><span class="line-val" id="r_influence">0 dhs</span></div>
+          <div class="line"><span class="line-name">Influence — Cachets</span><span class="line-val" id="r_influence_cachets">0 dhs</span></div>
+          <div class="line sub" id="r-inf-comm-line"><span class="line-name">↳ Frais de gestion (<span id="r_inf_taux">20</span>%)</span><span class="line-val" id="r_inf_comm">0 dhs</span></div>
           <div class="line"><span class="line-name">Production</span><span class="line-val" id="r_prod">0 dhs</span></div>
           <div class="line"><span class="line-name">Audiovisuel</span><span class="line-val" id="r_av">0 dhs</span></div>
           <div class="line margin"><span class="line-name">Sous-total HT</span><span class="line-val" id="r_subtotal">0 dhs</span></div>
@@ -576,10 +532,9 @@
 </div>
 
 <script>
-  // ── MOT DE PASSE ───────────────────────────────────────
+  // ── AUTH ───────────────────────────────────────────────
   // Pour changer le mot de passe : modifier la valeur ci-dessous
-  const PASSWORD = 'DECLIC1496';
-
+  const PASSWORD = 'DECLIC1212';
   function tryLogin() {
     const val = document.getElementById('pwd-input').value;
     const err = document.getElementById('login-error');
@@ -594,10 +549,59 @@
     }
   }
 
-  // ── OUTIL ──────────────────────────────────────────────
+  // ── UTILS ──────────────────────────────────────────────
   function n(id) { return parseFloat(document.getElementById(id).value) || 0; }
   function fmt(v) { return Math.round(v).toLocaleString('fr-FR'); }
 
+  // ── POSTES PAR GRADE ───────────────────────────────────
+  const POSTES = {
+    1: ['Directeur Conseil','Directeur Artistique','Directeur Stratégie','Directeur de Projet','Autre'],
+    2: ['Senior SMM','Chargé de Projet','Concepteur-Rédacteur','Community Manager Senior','Chef de Publicité','Autre'],
+    3: ['Junior CM','Assistant Production','Junior Graphiste','Stagiaire','Autre']
+  };
+  const TAUX = { 1: 850, 2: 450, 3: 250 };
+  let posteIds = { 1: 0, 2: 0, 3: 0 };
+
+  function addPoste(grade) {
+    const id = `p${grade}_${++posteIds[grade]}`;
+    const options = POSTES[grade].map(p => `<option value="${p}">${p}</option>`).join('');
+    const div = document.createElement('div');
+    div.className = 'poste-row'; div.id = id;
+    div.innerHTML = `
+      <select onchange="calc()">${options}</select>
+      <input type="number" min="0" step="0.5" placeholder="h" oninput="calcGrade(${grade})">
+      <button class="btn-del" onclick="removeRow('${id}');calcGrade(${grade})">×</button>
+    `;
+    document.getElementById(`postes-g${grade}`).appendChild(div);
+    calc();
+  }
+
+  function calcGrade(grade) {
+    let total = 0;
+    document.querySelectorAll(`#postes-g${grade} .poste-row`).forEach(row => {
+      const h = parseFloat(row.querySelector('input[type="number"]')?.value) || 0;
+      total += h * TAUX[grade];
+    });
+    document.getElementById(`st-g${grade}`).textContent = fmt(total) + ' dhs';
+    calc();
+  }
+
+  function getConseilBase() {
+    if (currentMode === 'a') {
+      let total = 0;
+      [1,2,3].forEach(g => {
+        document.querySelectorAll(`#postes-g${g} .poste-row`).forEach(row => {
+          const h = parseFloat(row.querySelector('input[type="number"]')?.value) || 0;
+          total += h * TAUX[g];
+        });
+      });
+      return total;
+    } else {
+      return n('forfait_base');
+    }
+  }
+
+  // ── MODE ───────────────────────────────────────────────
   let currentMode = 'a';
   function setMode(m) {
     currentMode = m;
@@ -608,43 +612,18 @@
     calc();
   }
 
+  // ── COMPLEXITÉ ─────────────────────────────────────────
   let complexite = 'simple';
-  const coefs = { simple: 1.0, moyen: 1.3, complexe: 1.6 };
-  const cxLabels = { simple: 'Standard ×1.0', moyen: 'Maîtrisé ×1.3', complexe: 'Complexe ×1.6' };
+  const coefs = { simple:1.0, moyen:1.3, complexe:1.6 };
+  const cxLabels = { simple:'Standard ×1.0', moyen:'Maîtrisé ×1.3', complexe:'Complexe ×1.6' };
 
   function selectComplexite(c) {
     complexite = c;
-    ['simple','moyen','complexe'].forEach(x =>
-      document.getElementById('cx-' + x).classList.toggle('active', x === c)
-    );
+    ['simple','moyen','complexe'].forEach(x => document.getElementById('cx-'+x).classList.toggle('active', x===c));
     calc();
   }
 
-  function getConseilValue() {
-    const coef = coefs[complexite];
-    if (currentMode === 'a') {
-      const base = 850*(n('g1_concept')+n('g1_pilotage')) + 450*(n('g2_concept')+n('g2_pilotage')) + 250*(n('g3_concept')+n('g3_pilotage'));
-      return Math.round(base * coef);
-    } else {
-      return Math.round(n('forfait_base') * coef);
-    }
-  }
-
-  function updateStratResult(conseil) {
-    const modeLabel = currentMode === 'a' ? 'Taux horaire' : 'Forfait concept';
-    document.getElementById('strat-result-label').textContent = `Stratégie & Conseil — ${modeLabel}`;
-    let detail = '';
-    if (currentMode === 'a') {
-      const base = 850*(n('g1_concept')+n('g1_pilotage')) + 450*(n('g2_concept')+n('g2_pilotage')) + 250*(n('g3_concept')+n('g3_pilotage'));
-      detail = `Base ${fmt(base)} dhs · ${cxLabels[complexite]}`;
-    } else {
-      detail = `Base ${fmt(n('forfait_base'))} dhs · ${cxLabels[complexite]}`;
-    }
-    document.getElementById('strat-result-detail').textContent = detail || '—';
-    document.getElementById('strat-result-val').innerHTML = fmt(conseil) + ' <span>dhs</span>';
-    document.getElementById('r_conseil_label').textContent = `Stratégie & Conseil (${cxLabels[complexite]})`;
-  }
-
+  // ── INFLUENCE ──────────────────────────────────────────
   let infId = 0;
   function addInfluenceur() {
     const id = ++infId;
@@ -658,6 +637,25 @@
     document.getElementById('influence-list').appendChild(div);
   }
 
+  // ── COMMISSION INFLUENCE ───────────────────────────────
+  let infCommActive = true;
+  let infTaux = 20;
+
+  function toggleInfCommission() {
+    infCommActive = !infCommActive;
+    document.getElementById('inf-comm-check').classList.toggle('checked', infCommActive);
+    document.getElementById('inf-comm-body').classList.toggle('open', infCommActive);
+    document.getElementById('r-inf-comm-line').style.display = infCommActive ? 'flex' : 'none';
+    calc();
+  }
+
+  function selectInfTaux(t) {
+    infTaux = t;
+    [10,20,30].forEach(x => document.getElementById('inf-t'+x).classList.toggle('active', x===t));
+    calc();
+  }
+
+  // ── PROD / AV ──────────────────────────────────────────
   let prodId = 0;
   function addProdItem() {
     const id = 'prod_' + (++prodId);
@@ -692,53 +690,73 @@
     const row = document.getElementById(id);
     if (!row) return;
     const inputs = row.querySelectorAll('input[type="number"]');
-    document.getElementById('t_' + id).textContent = fmt((parseFloat(inputs[0].value)||0) * (parseFloat(inputs[1].value)||0)) + ' dhs';
+    document.getElementById('t_'+id).textContent = fmt((parseFloat(inputs[0].value)||0)*(parseFloat(inputs[1].value)||0)) + ' dhs';
     calc();
   }
 
   function removeRow(id) {
-    const el = document.getElementById(id);
-    if (el) { el.remove(); calc(); }
+    const el = document.getElementById(id); if (el) { el.remove(); calc(); }
   }
 
+  // ── CALCUL GLOBAL ──────────────────────────────────────
   function calc() {
-    const conseil = getConseilValue();
-    updateStratResult(conseil);
+    const base = getConseilBase();
+    const coef = coefs[complexite];
+    const conseil = Math.round(base * coef);
 
-    let influence = 0;
+    // Récap strat
+    const modeLabel = currentMode === 'a' ? 'Taux horaire' : 'Forfait concept';
+    document.getElementById('strat-result-label').textContent = `Stratégie & Conseil — ${modeLabel}`;
+    document.getElementById('strat-result-detail').textContent = base > 0 ? `Base ${fmt(base)} dhs · ${cxLabels[complexite]}` : '—';
+    document.getElementById('strat-result-val').innerHTML = fmt(conseil) + ' <span>dhs</span>';
+    document.getElementById('r_conseil_label').textContent = `Stratégie & Conseil (${cxLabels[complexite]})`;
+    document.getElementById('r_conseil').textContent = fmt(conseil) + ' dhs';
+
+    // Influence cachets
+    let cachets = 0;
     document.querySelectorAll('#influence-list .influence-row').forEach(row => {
-      influence += parseFloat(row.querySelector('input[type="number"]')?.value) || 0;
+      cachets += parseFloat(row.querySelector('input[type="number"]')?.value) || 0;
     });
+    const infComm = infCommActive ? Math.round(cachets * infTaux / 100) : 0;
+    const influence = cachets + infComm;
 
+    document.getElementById('st_influence_cachets').textContent = fmt(cachets) + ' dhs';
+    document.getElementById('inf-comm-display').textContent = infCommActive ? fmt(infComm) + ' dhs' : '—';
+    document.getElementById('st_influence').textContent = fmt(influence) + ' dhs';
+    document.getElementById('r_influence_cachets').textContent = fmt(cachets) + ' dhs';
+    document.getElementById('r_inf_comm').textContent = fmt(infComm) + ' dhs';
+    document.getElementById('r_inf_taux').textContent = infTaux;
+
+    // Prod
     let prod = 0;
     document.querySelectorAll('#prod-list .item-row').forEach(row => {
       const i = row.querySelectorAll('input[type="number"]');
       prod += (parseFloat(i[0]?.value)||0) * (parseFloat(i[1]?.value)||0);
     });
 
+    // AV
     let av = 0;
     document.querySelectorAll('#av-list .item-row').forEach(row => {
       const i = row.querySelectorAll('input[type="number"]');
       av += (parseFloat(i[0]?.value)||0) * (parseFloat(i[1]?.value)||0);
     });
 
-    const subtotal = conseil + influence + prod + av;
-    const commission = subtotal * (n('marge') / 100);
-    const total = subtotal + commission;
-
-    document.getElementById('st_influence').textContent = fmt(influence) + ' dhs';
     document.getElementById('st_prod').textContent = fmt(prod) + ' dhs';
     document.getElementById('st_av').textContent = fmt(av) + ' dhs';
-    document.getElementById('r_conseil').textContent = fmt(conseil) + ' dhs';
-    document.getElementById('r_influence').textContent = fmt(influence) + ' dhs';
     document.getElementById('r_prod').textContent = fmt(prod) + ' dhs';
     document.getElementById('r_av').textContent = fmt(av) + ' dhs';
+
+    const subtotal = conseil + influence + prod + av;
+    const commPct = n('marge') / 100;
+    const commission = Math.round(subtotal * commPct);
+    const total = subtotal + commission;
+
     document.getElementById('r_subtotal').textContent = fmt(subtotal) + ' dhs';
     document.getElementById('r_marge_pct').textContent = n('marge');
     document.getElementById('r_marge').textContent = fmt(commission) + ' dhs';
     document.getElementById('r_total').textContent = fmt(total);
     document.getElementById('r_total_bar').textContent = fmt(total);
-    document.getElementById('r_sub2').textContent = 'dont ' + fmt(commission) + ' dhs commission';
+    document.getElementById('r_sub2').textContent = 'dont ' + fmt(commission) + ' dhs commission agence';
   }
 
   function syncSlider() { document.getElementById('marge_slider').value = document.getElementById('marge').value; }
@@ -747,13 +765,22 @@
   function resetAll() {
     currentMode = 'a'; setMode('a');
     complexite = 'simple'; selectComplexite('simple');
-    document.querySelectorAll('input[type="number"]').forEach(i => { if (i.id === 'marge') i.value = 20; else i.value = ''; });
-    document.querySelectorAll('input[type="text"]').forEach(i => i.value = '');
+    infCommActive = true; infTaux = 20;
+    document.getElementById('inf-comm-check').classList.add('checked');
+    document.getElementById('inf-comm-body').classList.add('open');
+    document.getElementById('r-inf-comm-line').style.display = 'flex';
+    [10,20,30].forEach(x => document.getElementById('inf-t'+x).classList.toggle('active', x===20));
+    document.querySelectorAll('input[type="number"]').forEach(i => { if(i.id==='marge') i.value=20; else i.value=''; });
+    document.querySelectorAll('input[type="text"]').forEach(i => i.value='');
     document.getElementById('marge_slider').value = 20;
     document.getElementById('influence-list').innerHTML = '';
     document.getElementById('prod-list').innerHTML = '';
     document.getElementById('av-list').innerHTML = '';
-    infId = 0; prodId = 0; avId = 0;
+    document.getElementById('postes-g1').innerHTML = '';
+    document.getElementById('postes-g2').innerHTML = '';
+    document.getElementById('postes-g3').innerHTML = '';
+    infId=0; prodId=0; avId=0; posteIds={1:0,2:0,3:0};
+    ['g1','g2','g3'].forEach(g => document.getElementById('st-'+g).textContent = '0 dhs');
     addInfluenceur(); addProdItem(); addAvItem();
     calc();
   }
@@ -766,6 +793,8 @@
     document.getElementById('toggle-label').textContent = summaryOpen ? 'Masquer' : 'Voir le détail';
   }
 
+  // Init
+  document.getElementById('inf-comm-check').classList.add('checked');
   addInfluenceur(); addProdItem(); addAvItem();
   calc();
 </script>
