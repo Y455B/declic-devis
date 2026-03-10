@@ -261,7 +261,7 @@
     </div>
     <button class="login-btn" onclick="tryLogin()">Accéder à l'outil</button>
     <div class="login-error" id="login-error"></div>
-    <div style="text-align:center;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:#3a3a3a;">v1.8.1</div>
+    <div style="text-align:center;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:#3a3a3a;">v1.8.2</div>
   </div>
 </div>
 
@@ -275,7 +275,7 @@
       Calculateur de Devis
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-      <div class="badge">Outil Interne — v1.8.1</div>
+      <div class="badge">Outil Interne — v1.8.2</div>
       <button onclick="resetAll()" style="background:transparent;border:1px solid #3a1a1a;color:#e8372a;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;padding:5px 12px;border-radius:2px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(232,55,42,0.08)'" onmouseout="this.style.background='transparent'">↺ Réinitialiser</button>
     </div>
   </header>
@@ -309,6 +309,11 @@
             <div class="grade-divider"></div>
             <div class="poste-list" id="postes-g1"></div>
             <button class="btn-add-poste" onclick="addPoste(1)">+ Ajouter un poste</button>
+            <div style="height:1px;background:var(--border);margin:12px 0 10px;"></div>
+            <div style="display:grid;grid-template-columns:1fr 56px;gap:6px;align-items:center;margin-bottom:8px;">
+              <label style="font-size:9px;">Pilotage (h)</label>
+              <input type="number" id="pilot-g1" min="0" step="0.5" placeholder="h" oninput="calcGrade(1)" style="font-size:12px;padding:7px 8px;text-align:center;">
+            </div>
             <div class="grade-subtotal">Sous-total G1 : <strong id="st-g1">0 dhs</strong></div>
           </div>
 
@@ -321,6 +326,11 @@
             <div class="grade-divider"></div>
             <div class="poste-list" id="postes-g2"></div>
             <button class="btn-add-poste" onclick="addPoste(2)">+ Ajouter un poste</button>
+            <div style="height:1px;background:var(--border);margin:12px 0 10px;"></div>
+            <div style="display:grid;grid-template-columns:1fr 56px;gap:6px;align-items:center;margin-bottom:8px;">
+              <label style="font-size:9px;">Pilotage (h)</label>
+              <input type="number" id="pilot-g2" min="0" step="0.5" placeholder="h" oninput="calcGrade(2)" style="font-size:12px;padding:7px 8px;text-align:center;">
+            </div>
             <div class="grade-subtotal">Sous-total G2 : <strong id="st-g2">0 dhs</strong></div>
           </div>
 
@@ -333,6 +343,11 @@
             <div class="grade-divider"></div>
             <div class="poste-list" id="postes-g3"></div>
             <button class="btn-add-poste" onclick="addPoste(3)">+ Ajouter un poste</button>
+            <div style="height:1px;background:var(--border);margin:12px 0 10px;"></div>
+            <div style="display:grid;grid-template-columns:1fr 56px;gap:6px;align-items:center;margin-bottom:8px;">
+              <label style="font-size:9px;">Pilotage (h)</label>
+              <input type="number" id="pilot-g3" min="0" step="0.5" placeholder="h" oninput="calcGrade(3)" style="font-size:12px;padding:7px 8px;text-align:center;">
+            </div>
             <div class="grade-subtotal">Sous-total G3 : <strong id="st-g3">0 dhs</strong></div>
           </div>
 
@@ -555,9 +570,9 @@
 
   // ── POSTES PAR GRADE ───────────────────────────────────
   const POSTES = {
-    1: ['Directeur Conseil','Directeur Artistique','Directeur Stratégie','Directeur de Projet','Autre'],
-    2: ['Senior SMM','Chargé de Projet','Concepteur-Rédacteur','Community Manager Senior','Chef de Publicité','Autre'],
-    3: ['Junior CM','Assistant Production','Junior Graphiste','Stagiaire','Autre']
+    1: ['Directeur Clientèle','Directeur Créatif','Directeur Production & Event','Digital Manager','Autre'],
+    2: ['Social Media Manager','Planneur Stratégique','Chargé de Projet','Autre'],
+    3: ['Graphiste','Community Manager','Assistant Production','Autre']
   };
   const TAUX = { 1: 850, 2: 450, 3: 250 };
   let posteIds = { 1: 0, 2: 0, 3: 0 };
@@ -582,6 +597,9 @@
       const h = parseFloat(row.querySelector('input[type="number"]')?.value) || 0;
       total += h * TAUX[grade];
     });
+    // Pilotage
+    const pilotH = parseFloat(document.getElementById(`pilot-g${grade}`)?.value) || 0;
+    total += pilotH * TAUX[grade];
     document.getElementById(`st-g${grade}`).textContent = fmt(total) + ' dhs';
     calc();
   }
@@ -594,6 +612,8 @@
           const h = parseFloat(row.querySelector('input[type="number"]')?.value) || 0;
           total += h * TAUX[g];
         });
+        const pilotH = parseFloat(document.getElementById(`pilot-g${g}`)?.value) || 0;
+        total += pilotH * TAUX[g];
       });
       return total;
     } else {
@@ -780,6 +800,7 @@
     document.getElementById('postes-g2').innerHTML = '';
     document.getElementById('postes-g3').innerHTML = '';
     infId=0; prodId=0; avId=0; posteIds={1:0,2:0,3:0};
+    [1,2,3].forEach(g => { const el = document.getElementById('pilot-g'+g); if(el) el.value=''; });
     ['g1','g2','g3'].forEach(g => document.getElementById('st-'+g).textContent = '0 dhs');
     addInfluenceur(); addProdItem(); addAvItem();
     calc();
