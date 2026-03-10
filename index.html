@@ -697,7 +697,7 @@
     const tr = document.createElement('tr');
     tr.className = 'item-row'; tr.id = id;
     tr.innerHTML = `
-      <td><input type="text" placeholder="ex : Location matériel photo, Location lumière, Location d'espace ..."></td>
+      <td><input type="text" placeholder="ex : Location matériel photo, lumière, espace ..."></td>
       <td><input type="number" min="0" step="1" placeholder="1" value="1" oninput="updateItemTotal('${id}')"></td>
       <td><input type="number" min="0" step="100" placeholder="0" oninput="updateItemTotal('${id}')"></td>
       <td class="total-cell" id="t_${id}">0 dhs</td>
