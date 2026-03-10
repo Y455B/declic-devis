@@ -40,12 +40,8 @@
   .container { max-width: 880px; margin: 0 auto; position: relative; z-index: 1; }
 
   header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 52px;
-    padding-bottom: 32px;
-    border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 52px; padding-bottom: 32px; border-bottom: 1px solid var(--border);
   }
 
   .logo { font-size: 11px; font-family: 'DM Mono', monospace; letter-spacing: 0.3em; color: var(--muted); text-transform: uppercase; }
@@ -99,7 +95,64 @@
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
 
-  .hint { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); margin-top: 2px; }
+  .hint { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); margin-top: 2px; line-height: 1.5; }
+
+  /* ── MODE SWITCH ─────────────────────────────────── */
+  .mode-switch {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .mode-btn {
+    display: flex; flex-direction: column; align-items: flex-start;
+    gap: 3px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+  }
+
+  .mode-btn:hover { border-color: var(--muted); }
+
+  .mode-btn.active {
+    border-color: var(--accent);
+    background: rgba(232,55,42,0.06);
+  }
+
+  .mode-btn-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+
+  .mode-btn.active .mode-btn-tag { color: var(--accent); }
+
+  .mode-btn-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .mode-btn-desc {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    line-height: 1.4;
+    margin-top: 2px;
+  }
+
+  /* ── MODE PANELS ─────────────────────────────────── */
+  .mode-panel { display: none; }
+  .mode-panel.active { display: block; animation: fadeUp 0.25s ease both; }
 
   /* Grades */
   .grade-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
@@ -109,24 +162,86 @@
   .grade-rate span { font-size: 11px; font-weight: 400; color: var(--muted); font-family: 'DM Mono', monospace; }
   .divider { height: 1px; background: var(--border); margin: 4px 0 16px; }
 
-  /* Influence */
-  .influence-grid { display: flex; flex-direction: column; gap: 10px; }
-  .influence-row {
+  /* Forfait complexité */
+  .complexite-grid {
     display: grid;
-    grid-template-columns: 1fr 160px 36px;
-    gap: 10px;
-    align-items: center;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .complexite-btn {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 4px;
     background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 3px;
-    padding: 12px 14px;
-    animation: fadeUp 0.2s ease both;
+    padding: 14px 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .complexite-btn:hover { border-color: var(--muted); }
+  .complexite-btn.active { border-color: var(--accent); background: rgba(232,55,42,0.06); }
+
+  .complexite-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .complexite-coef {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .complexite-btn.active .complexite-coef { color: var(--accent); }
+
+  .forfait-result {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+  }
+
+  .forfait-result-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+  .forfait-result-val { font-size: 22px; font-weight: 800; color: var(--accent); font-family: 'Syne', sans-serif; }
+  .forfait-result-val span { font-size: 12px; font-weight: 400; color: var(--muted); font-family: 'DM Mono', monospace; margin-left: 4px; }
+
+  /* Mode C — inclus */
+  .inclus-banner {
+    background: rgba(255,255,255,0.02);
+    border: 1px dashed var(--border);
+    border-radius: 3px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .inclus-icon { font-size: 22px; flex-shrink: 0; }
+
+  .inclus-text { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); line-height: 1.6; }
+  .inclus-text strong { color: var(--text); display: block; margin-bottom: 4px; font-size: 12px; }
+
+  /* Influence */
+  .influence-grid { display: flex; flex-direction: column; gap: 10px; }
+  .influence-row {
+    display: grid; grid-template-columns: 1fr 160px 36px; gap: 10px;
+    align-items: center; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 3px; padding: 12px 14px; animation: fadeUp 0.2s ease both;
   }
   .inf-label { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 5px; }
   .influence-row input[type="text"] { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; padding: 4px 0; font-size: 13px; }
-  .influence-row input[type="text"]:focus { box-shadow: none; border-bottom-color: var(--accent); }
+  .influence-row input[type="text"]:focus { box-shadow: none; border-bottom-color: var(--accent); outline: none; }
   .influence-row input[type="number"] { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; padding: 4px 0; font-size: 16px; font-weight: 700; color: var(--accent); -moz-appearance: textfield; }
-  .influence-row input[type="number"]:focus { box-shadow: none; border-bottom-color: var(--accent); }
+  .influence-row input[type="number"]:focus { box-shadow: none; border-bottom-color: var(--accent); outline: none; }
 
   /* Items table */
   .items-table { width: 100%; border-collapse: collapse; }
@@ -136,7 +251,6 @@
   .items-table th.prix { width: 130px; }
   .items-table th.total { width: 110px; text-align: right; }
   .items-table th.del { width: 36px; }
-
   .item-row td { padding: 6px 8px; vertical-align: middle; }
   .item-row td.total-cell { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--text); text-align: right; white-space: nowrap; }
   .item-row input[type="text"] { font-size: 13px; padding: 8px 10px; }
@@ -151,11 +265,10 @@
 
   .btn-add {
     display: flex; align-items: center; justify-content: center; gap: 8px;
-    margin-top: 14px; width: 100%;
-    background: transparent; border: 1px dashed var(--border);
+    margin-top: 14px; width: 100%; background: transparent; border: 1px dashed var(--border);
     color: var(--muted); font-family: 'DM Mono', monospace; font-size: 10px;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    padding: 9px 16px; border-radius: 3px; cursor: pointer; transition: all 0.2s;
+    letter-spacing: 0.15em; text-transform: uppercase; padding: 9px 16px;
+    border-radius: 3px; cursor: pointer; transition: all 0.2s;
   }
   .btn-add:hover { border-color: var(--accent); color: var(--accent); }
 
@@ -190,7 +303,7 @@
   .summary-bar:hover .summary-toggle { color: var(--accent); }
 
   .summary-body { max-height: 0; overflow: hidden; border-top: 1px solid transparent; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), border-color 0.3s; }
-  .summary-body.open { max-height: 600px; border-top-color: var(--border); }
+  .summary-body.open { max-height: 700px; border-top-color: var(--border); }
   .summary-body-inner { padding: 24px; }
   .summary-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
 
@@ -199,6 +312,7 @@
   .line-name { color: var(--muted); }
   .line-val { color: var(--text); font-weight: 500; }
   .line.margin { border-top: 1px dashed var(--border); padding-top: 10px; margin-top: 4px; }
+  .line.inclus .line-val { color: var(--muted); font-style: italic; }
 
   .total-row { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid var(--accent); padding-top: 20px; margin-top: 4px; }
   .total-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
@@ -212,7 +326,7 @@
   .info-banner { background: rgba(232,55,42,0.04); border: 1px solid rgba(232,55,42,0.15); border-radius: 3px; padding: 12px 16px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
 
   @media (max-width: 640px) {
-    .row, .row.three, .grade-grid { grid-template-columns: 1fr; }
+    .row, .row.three, .grade-grid, .complexite-grid, .mode-switch { grid-template-columns: 1fr; }
     header { flex-direction: column; gap: 12px; }
     .total-amount { font-size: 32px; }
     .influence-row { grid-template-columns: 1fr 120px 36px; }
@@ -228,7 +342,7 @@
       Calculateur de Devis
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-      <div class="badge">Outil Interne — v1.3</div>
+      <div class="badge">Outil Interne — v1.5</div>
       <button onclick="resetAll()" style="background:transparent;border:1px solid #3a1a1a;color:#e8372a;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;padding:5px 12px;border-radius:2px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(232,55,42,0.08)'" onmouseout="this.style.background='transparent'">↺ Réinitialiser</button>
     </div>
   </header>
@@ -244,47 +358,148 @@
       <span class="section-title">Stratégie & Conseil</span>
     </div>
     <div class="section-body">
-      <div class="grade-grid">
-        <div class="grade-card">
-          <div class="grade-label">Grade 1 — Associé</div>
-          <div class="grade-rate">850 <span>dhs/h</span></div>
-          <div class="divider"></div>
-          <div class="field">
-            <label>Réflexion Concept (h)</label>
-            <input type="number" id="g1_concept" min="0" step="0.5" placeholder="0" oninput="calc()">
+
+      <!-- Switch de mode -->
+      <div class="mode-switch">
+        <button class="mode-btn active" id="btn-mode-a" onclick="setMode('a')">
+          <span class="mode-btn-tag">Mode A</span>
+          <span class="mode-btn-label">Taux horaire</span>
+          <span class="mode-btn-desc">Périmètre clair, client cadré</span>
+        </button>
+        <button class="mode-btn" id="btn-mode-b" onclick="setMode('b')">
+          <span class="mode-btn-tag">Mode B</span>
+          <span class="mode-btn-label">Forfait concept</span>
+          <span class="mode-btn-desc">Client indécis, révisions illimitées</span>
+        </button>
+        <button class="mode-btn" id="btn-mode-c" onclick="setMode('c')">
+          <span class="mode-btn-tag">Mode C</span>
+          <span class="mode-btn-label">Inclus / Bundlé</span>
+          <span class="mode-btn-desc">Strat noyée dans une autre presta</span>
+        </button>
+      </div>
+
+      <!-- MODE A — Taux horaire -->
+      <div class="mode-panel active" id="panel-a">
+        <div class="grade-grid">
+          <div class="grade-card">
+            <div class="grade-label">Grade 1 — Associé</div>
+            <div class="grade-rate">850 <span>dhs/h</span></div>
+            <div class="divider"></div>
+            <div class="field">
+              <label>Réflexion Concept (h)</label>
+              <input type="number" id="g1_concept" min="0" step="0.5" placeholder="0" oninput="calc()">
+            </div>
+            <div class="field" style="margin-top:10px">
+              <label>Pilotage (h)</label>
+              <input type="number" id="g1_pilotage" min="0" step="0.5" placeholder="0" oninput="calc()">
+            </div>
           </div>
-          <div class="field" style="margin-top:10px">
-            <label>Pilotage (h)</label>
-            <input type="number" id="g1_pilotage" min="0" step="0.5" placeholder="0" oninput="calc()">
+          <div class="grade-card">
+            <div class="grade-label">Grade 2 — Confirmé</div>
+            <div class="grade-rate">450 <span>dhs/h</span></div>
+            <div class="divider"></div>
+            <div class="field">
+              <label>Réflexion Concept (h)</label>
+              <input type="number" id="g2_concept" min="0" step="0.5" placeholder="0" oninput="calc()">
+            </div>
+            <div class="field" style="margin-top:10px">
+              <label>Pilotage (h)</label>
+              <input type="number" id="g2_pilotage" min="0" step="0.5" placeholder="0" oninput="calc()">
+            </div>
           </div>
-        </div>
-        <div class="grade-card">
-          <div class="grade-label">Grade 2 — Confirmé</div>
-          <div class="grade-rate">450 <span>dhs/h</span></div>
-          <div class="divider"></div>
-          <div class="field">
-            <label>Réflexion Concept (h)</label>
-            <input type="number" id="g2_concept" min="0" step="0.5" placeholder="0" oninput="calc()">
-          </div>
-          <div class="field" style="margin-top:10px">
-            <label>Pilotage (h)</label>
-            <input type="number" id="g2_pilotage" min="0" step="0.5" placeholder="0" oninput="calc()">
-          </div>
-        </div>
-        <div class="grade-card">
-          <div class="grade-label">Grade 3 — Junior</div>
-          <div class="grade-rate">250 <span>dhs/h</span></div>
-          <div class="divider"></div>
-          <div class="field">
-            <label>Réflexion Concept (h)</label>
-            <input type="number" id="g3_concept" min="0" step="0.5" placeholder="0" oninput="calc()">
-          </div>
-          <div class="field" style="margin-top:10px">
-            <label>Pilotage (h)</label>
-            <input type="number" id="g3_pilotage" min="0" step="0.5" placeholder="0" oninput="calc()">
+          <div class="grade-card">
+            <div class="grade-label">Grade 3 — Junior</div>
+            <div class="grade-rate">250 <span>dhs/h</span></div>
+            <div class="divider"></div>
+            <div class="field">
+              <label>Réflexion Concept (h)</label>
+              <input type="number" id="g3_concept" min="0" step="0.5" placeholder="0" oninput="calc()">
+            </div>
+            <div class="field" style="margin-top:10px">
+              <label>Pilotage (h)</label>
+              <input type="number" id="g3_pilotage" min="0" step="0.5" placeholder="0" oninput="calc()">
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- MODE B — Forfait concept -->
+      <div class="mode-panel" id="panel-b">
+        <div class="row" style="margin-bottom:20px;">
+          <div class="field">
+            <label>Base forfait (dhs)</label>
+            <input type="number" id="forfait_base" min="0" step="500" placeholder="0" oninput="calcForfait()">
+            <span class="hint">Tarif de référence pour un concept standard</span>
+          </div>
+          <div class="field">
+            <label>Responsable (grade)</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:2px;">
+              <button class="complexite-btn active" id="fg1" onclick="selectForfaitGrade(1)" style="padding:10px 6px;">
+                <span class="complexite-name" style="font-size:11px;">G1</span>
+                <span class="complexite-coef">850/h</span>
+              </button>
+              <button class="complexite-btn" id="fg2" onclick="selectForfaitGrade(2)" style="padding:10px 6px;">
+                <span class="complexite-name" style="font-size:11px;">G2</span>
+                <span class="complexite-coef">450/h</span>
+              </button>
+              <button class="complexite-btn" id="fg3" onclick="selectForfaitGrade(3)" style="padding:10px 6px;">
+                <span class="complexite-name" style="font-size:11px;">G3</span>
+                <span class="complexite-coef">250/h</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <label style="display:block;margin-bottom:10px;">Complexité estimée du concept</label>
+        <div class="complexite-grid">
+          <button class="complexite-btn active" id="cx-simple" onclick="selectComplexite('simple')">
+            <span class="complexite-name">Simple</span>
+            <span class="complexite-coef">Base ×1.0</span>
+          </button>
+          <button class="complexite-btn" id="cx-moyen" onclick="selectComplexite('moyen')">
+            <span class="complexite-name">Moyen</span>
+            <span class="complexite-coef">Base ×1.3</span>
+          </button>
+          <button class="complexite-btn" id="cx-complexe" onclick="selectComplexite('complexe')">
+            <span class="complexite-name">Complexe</span>
+            <span class="complexite-coef">Base ×1.6</span>
+          </button>
+        </div>
+        <span class="hint" style="display:block;margin-top:8px;">
+          Simple = brief clair, client aligné · Moyen = plusieurs décideurs, brief flou · Complexe = client historiquement indécis, concept créatif risqué
+        </span>
+
+        <div class="forfait-result">
+          <div>
+            <div class="forfait-result-label">Forfait concept calculé</div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);margin-top:3px;" id="forfait-detail">—</div>
+          </div>
+          <div class="forfait-result-val" id="forfait-display">0 <span>dhs</span></div>
+        </div>
+      </div>
+
+      <!-- MODE C — Inclus -->
+      <div class="mode-panel" id="panel-c">
+        <div class="inclus-banner">
+          <div class="inclus-icon">⟳</div>
+          <div class="inclus-text">
+            <strong>Stratégie bundlée — non facturée séparément</strong>
+            La réflexion concept et le pilotage sont inclus dans une autre prestation du devis. Cette ligne n'apparaîtra pas dans le total client mais reste tracée ici à titre interne.
+          </div>
+        </div>
+        <div class="row" style="margin-top:16px;">
+          <div class="field">
+            <label>Prestation d'accueil</label>
+            <input type="text" id="bundle_presta" placeholder="ex : Activation Run Club, Pack Content…">
+          </div>
+          <div class="field">
+            <label>Coût interne estimé (dhs)</label>
+            <input type="number" id="bundle_cout" min="0" step="100" placeholder="0">
+            <span class="hint">Pour mémoire uniquement — non comptabilisé dans le total</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -383,7 +598,7 @@
       <div class="summary-body-inner">
         <div class="summary-title">— Récapitulatif Devis</div>
         <div class="line-items">
-          <div class="line"><span class="line-name">Stratégie & Conseil</span><span class="line-val" id="r_conseil">0 dhs</span></div>
+          <div class="line" id="r-conseil-line"><span class="line-name" id="r_conseil_label">Stratégie & Conseil</span><span class="line-val" id="r_conseil">0 dhs</span></div>
           <div class="line"><span class="line-name">Influence</span><span class="line-val" id="r_influence">0 dhs</span></div>
           <div class="line"><span class="line-name">Production</span><span class="line-val" id="r_prod">0 dhs</span></div>
           <div class="line"><span class="line-name">Audiovisuel</span><span class="line-val" id="r_av">0 dhs</span></div>
@@ -409,6 +624,69 @@
 <script>
   function n(id) { return parseFloat(document.getElementById(id).value) || 0; }
   function fmt(v) { return Math.round(v).toLocaleString('fr-FR'); }
+
+  // ── MODE SWITCH ────────────────────────────────────────
+  let currentMode = 'a';
+
+  function setMode(m) {
+    currentMode = m;
+    ['a','b','c'].forEach(x => {
+      document.getElementById('btn-mode-' + x).classList.toggle('active', x === m);
+      document.getElementById('panel-' + x).classList.toggle('active', x === m);
+    });
+    // Récap label
+    const label = document.getElementById('r_conseil_label');
+    const line = document.getElementById('r-conseil-line');
+    if (m === 'c') {
+      label.textContent = 'Stratégie & Conseil (inclus)';
+      line.classList.add('inclus');
+    } else {
+      label.textContent = 'Stratégie & Conseil';
+      line.classList.remove('inclus');
+    }
+    calc();
+  }
+
+  // ── MODE B — FORFAIT ───────────────────────────────────
+  let complexite = 'simple';
+  const coefs = { simple: 1.0, moyen: 1.3, complexe: 1.6 };
+  let forfaitGrade = 1;
+
+  function selectComplexite(c) {
+    complexite = c;
+    ['simple','moyen','complexe'].forEach(x =>
+      document.getElementById('cx-' + x).classList.toggle('active', x === c)
+    );
+    calcForfait();
+  }
+
+  function selectForfaitGrade(g) {
+    forfaitGrade = g;
+    [1,2,3].forEach(x =>
+      document.getElementById('fg' + x).classList.toggle('active', x === g)
+    );
+    calcForfait();
+  }
+
+  function calcForfait() {
+    const base = n('forfait_base');
+    const coef = coefs[complexite];
+    const total = Math.round(base * coef);
+    document.getElementById('forfait-display').innerHTML = fmt(total) + ' <span>dhs</span>';
+    const labels = { simple: 'Simple ×1.0', moyen: 'Moyen ×1.3', complexe: 'Complexe ×1.6' };
+    document.getElementById('forfait-detail').textContent = `Base ${fmt(base)} dhs · ${labels[complexite]}`;
+    calc();
+  }
+
+  function getConseilValue() {
+    if (currentMode === 'a') {
+      return 850*(n('g1_concept')+n('g1_pilotage')) + 450*(n('g2_concept')+n('g2_pilotage')) + 250*(n('g3_concept')+n('g3_pilotage'));
+    } else if (currentMode === 'b') {
+      return Math.round(n('forfait_base') * coefs[complexite]);
+    } else {
+      return 0; // Mode C — non comptabilisé
+    }
+  }
 
   // ── INFLUENCE ──────────────────────────────────────────
   let infId = 0;
@@ -436,8 +714,7 @@
   function addProdItem() {
     const id = 'prod_' + (++prodId);
     const tr = document.createElement('tr');
-    tr.className = 'item-row';
-    tr.id = id;
+    tr.className = 'item-row'; tr.id = id;
     tr.innerHTML = `
       <td><input type="text" placeholder="ex : Décor, Transport, Impression, Location matériel…"></td>
       <td><input type="number" min="0" step="1" placeholder="1" value="1" oninput="updateItemTotal('${id}')"></td>
@@ -453,8 +730,7 @@
   function addAvItem() {
     const id = 'av_' + (++avId);
     const tr = document.createElement('tr');
-    tr.className = 'item-row';
-    tr.id = id;
+    tr.className = 'item-row'; tr.id = id;
     tr.innerHTML = `
       <td><input type="text" placeholder="ex : Journée tournage, Montage, Motion design, Étalonnage…"></td>
       <td><input type="number" min="0" step="1" placeholder="1" value="1" oninput="updateItemTotal('${id}')"></td>
@@ -482,7 +758,7 @@
 
   // ── CALCUL GLOBAL ──────────────────────────────────────
   function calc() {
-    const conseil = 850*(n('g1_concept')+n('g1_pilotage')) + 450*(n('g2_concept')+n('g2_pilotage')) + 250*(n('g3_concept')+n('g3_pilotage'));
+    const conseil = getConseilValue();
 
     let influence = 0;
     document.querySelectorAll('#influence-list .influence-row').forEach(row => {
@@ -510,7 +786,7 @@
     document.getElementById('st_prod').textContent = fmt(prod) + ' dhs';
     document.getElementById('st_av').textContent = fmt(av) + ' dhs';
 
-    document.getElementById('r_conseil').textContent = fmt(conseil) + ' dhs';
+    document.getElementById('r_conseil').textContent = currentMode === 'c' ? 'Inclus' : fmt(conseil) + ' dhs';
     document.getElementById('r_influence').textContent = fmt(influence) + ' dhs';
     document.getElementById('r_prod').textContent = fmt(prod) + ' dhs';
     document.getElementById('r_av').textContent = fmt(av) + ' dhs';
@@ -526,14 +802,19 @@
   function syncInput() { document.getElementById('marge').value = document.getElementById('marge_slider').value; }
 
   function resetAll() {
+    currentMode = 'a';
+    setMode('a');
+    complexite = 'simple'; forfaitGrade = 1;
+    selectComplexite('simple'); selectForfaitGrade(1);
     document.querySelectorAll('input[type="number"]').forEach(i => { if (i.id === 'marge') i.value = 20; else i.value = ''; });
+    document.querySelectorAll('input[type="text"]').forEach(i => i.value = '');
     document.getElementById('marge_slider').value = 20;
     document.getElementById('influence-list').innerHTML = '';
     document.getElementById('prod-list').innerHTML = '';
     document.getElementById('av-list').innerHTML = '';
     infId = 0; prodId = 0; avId = 0;
     addInfluenceur(); addProdItem(); addAvItem();
-    calc();
+    calcForfait(); calc();
   }
 
   let summaryOpen = false;
@@ -546,7 +827,7 @@
 
   // Init
   addInfluenceur(); addProdItem(); addAvItem();
-  calc();
+  calcForfait(); calc();
 </script>
 </body>
 </html>
